@@ -1,0 +1,372 @@
+fileFormatVersion: 2
+guid: 3c9e58c193babdc459541bcb5e022a2a
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: CornerTrim1
+    100002: CornerTrim1 1
+    100004: CornerTrim2
+    100006: CornerTrim3
+    100008: group19_pCube284
+    100010: group19_pCube284 1
+    100012: group19_pCube285
+    100014: group19_pCube286
+    100016: group41_pCube270
+    100018: group41_pCylinder14
+    100020: group48
+    100022: group49
+    100024: group50
+    100026: group51
+    100028: LongTrim2
+    100030: LongTrim5
+    100032: LongTrim6
+    100034: LongTrim7
+    100036: LongTrim8
+    100038: LongTrim9
+    100040: longWall11
+    100042: longWall14
+    100044: longWall15
+    100046: longWall5
+    100048: pCube246
+    100050: pCylinder6
+    100052: polySurface110
+    100054: polySurface113
+    100056: polySurface127
+    100058: polySurface127 1
+    100060: polySurface128
+    100062: polySurface128 1
+    100064: polySurface129
+    100066: polySurface130
+    100068: polySurface131
+    100070: polySurface132
+    100072: polySurface133
+    100074: polySurface67
+    100076: polySurface67 1
+    100078: polySurface68
+    100080: polySurface77
+    100082: polySurface78
+    100084: polySurface86
+    100086: polySurface87
+    100088: polySurface88
+    100090: polySurface92
+    100092: polySurface93
+    100094: polySurface95
+    100096: polySurface96
+    100098: polySurface97
+    100100: polySurface99
+    100102: polySurface99 1
+    100104: ShortTrim1
+    100106: ShortTrim3
+    100108: ShortTrim4
+    100110: ShortTrim5
+    100112: wall17
+    100114: wall18
+    100116: wall9
+    100118: //RootNode
+    400000: CornerTrim1
+    400002: CornerTrim1 1
+    400004: CornerTrim2
+    400006: CornerTrim3
+    400008: group19_pCube284
+    400010: group19_pCube284 1
+    400012: group19_pCube285
+    400014: group19_pCube286
+    400016: group41_pCube270
+    400018: group41_pCylinder14
+    400020: group48
+    400022: group49
+    400024: group50
+    400026: group51
+    400028: LongTrim2
+    400030: LongTrim5
+    400032: LongTrim6
+    400034: LongTrim7
+    400036: LongTrim8
+    400038: LongTrim9
+    400040: longWall11
+    400042: longWall14
+    400044: longWall15
+    400046: longWall5
+    400048: pCube246
+    400050: pCylinder6
+    400052: polySurface110
+    400054: polySurface113
+    400056: polySurface127
+    400058: polySurface127 1
+    400060: polySurface128
+    400062: polySurface128 1
+    400064: polySurface129
+    400066: polySurface130
+    400068: polySurface131
+    400070: polySurface132
+    400072: polySurface133
+    400074: polySurface67
+    400076: polySurface67 1
+    400078: polySurface68
+    400080: polySurface77
+    400082: polySurface78
+    400084: polySurface86
+    400086: polySurface87
+    400088: polySurface88
+    400090: polySurface92
+    400092: polySurface93
+    400094: polySurface95
+    400096: polySurface96
+    400098: polySurface97
+    400100: polySurface99
+    400102: polySurface99 1
+    400104: ShortTrim1
+    400106: ShortTrim3
+    400108: ShortTrim4
+    400110: ShortTrim5
+    400112: wall17
+    400114: wall18
+    400116: wall9
+    400118: //RootNode
+    2100000: lambert18
+    2100002: EmissiveMat1
+    2300000: CornerTrim1
+    2300002: CornerTrim1 1
+    2300004: CornerTrim2
+    2300006: CornerTrim3
+    2300008: group19_pCube284
+    2300010: group19_pCube284 1
+    2300012: group19_pCube285
+    2300014: group19_pCube286
+    2300016: group41_pCube270
+    2300018: group41_pCylinder14
+    2300020: LongTrim2
+    2300022: LongTrim5
+    2300024: LongTrim6
+    2300026: LongTrim7
+    2300028: LongTrim8
+    2300030: LongTrim9
+    2300032: longWall11
+    2300034: longWall14
+    2300036: longWall15
+    2300038: longWall5
+    2300040: pCube246
+    2300042: pCylinder6
+    2300044: polySurface113
+    2300046: polySurface127
+    2300048: polySurface127 1
+    2300050: polySurface128
+    2300052: polySurface128 1
+    2300054: polySurface129
+    2300056: polySurface130
+    2300058: polySurface131
+    2300060: polySurface132
+    2300062: polySurface133
+    2300064: polySurface67
+    2300066: polySurface67 1
+    2300068: polySurface68
+    2300070: polySurface77
+    2300072: polySurface78
+    2300074: polySurface86
+    2300076: polySurface87
+    2300078: polySurface88
+    2300080: polySurface92
+    2300082: polySurface93
+    2300084: polySurface95
+    2300086: polySurface96
+    2300088: polySurface97
+    2300090: polySurface99
+    2300092: polySurface99 1
+    2300094: ShortTrim1
+    2300096: ShortTrim3
+    2300098: ShortTrim4
+    2300100: ShortTrim5
+    2300102: wall17
+    2300104: wall18
+    2300106: wall9
+    3300000: CornerTrim1
+    3300002: CornerTrim1 1
+    3300004: CornerTrim2
+    3300006: CornerTrim3
+    3300008: group19_pCube284
+    3300010: group19_pCube284 1
+    3300012: group19_pCube285
+    3300014: group19_pCube286
+    3300016: group41_pCube270
+    3300018: group41_pCylinder14
+    3300020: LongTrim2
+    3300022: LongTrim5
+    3300024: LongTrim6
+    3300026: LongTrim7
+    3300028: LongTrim8
+    3300030: LongTrim9
+    3300032: longWall11
+    3300034: longWall14
+    3300036: longWall15
+    3300038: longWall5
+    3300040: pCube246
+    3300042: pCylinder6
+    3300044: polySurface113
+    3300046: polySurface127
+    3300048: polySurface127 1
+    3300050: polySurface128
+    3300052: polySurface128 1
+    3300054: polySurface129
+    3300056: polySurface130
+    3300058: polySurface131
+    3300060: polySurface132
+    3300062: polySurface133
+    3300064: polySurface67
+    3300066: polySurface67 1
+    3300068: polySurface68
+    3300070: polySurface77
+    3300072: polySurface78
+    3300074: polySurface86
+    3300076: polySurface87
+    3300078: polySurface88
+    3300080: polySurface92
+    3300082: polySurface93
+    3300084: polySurface95
+    3300086: polySurface96
+    3300088: polySurface97
+    3300090: polySurface99
+    3300092: polySurface99 1
+    3300094: ShortTrim1
+    3300096: ShortTrim3
+    3300098: ShortTrim4
+    3300100: ShortTrim5
+    3300102: wall17
+    3300104: wall18
+    3300106: wall9
+    4300000: polySurface87
+    4300002: LongTrim5
+    4300004: polySurface77
+    4300006: polySurface86
+    4300008: polySurface68
+    4300010: ShortTrim1
+    4300012: polySurface78
+    4300014: polySurface92
+    4300016: polySurface93
+    4300018: LongTrim2
+    4300020: polySurface88
+    4300022: polySurface97
+    4300024: LongTrim7
+    4300026: longWall11
+    4300028: group41_pCylinder14
+    4300030: wall9
+    4300032: ShortTrim3
+    4300034: polySurface96
+    4300036: group41_pCube270
+    4300038: longWall5
+    4300040: LongTrim6
+    4300042: polySurface95
+    4300044: pCylinder6
+    4300046: pCube246
+    4300048: polySurface113
+    4300050: CornerTrim2
+    4300052: group19_pCube285
+    4300054: polySurface99
+    4300056: polySurface128
+    4300058: polySurface127
+    4300060: polySurface99
+    4300062: polySurface128
+    4300064: polySurface127
+    4300066: polySurface67
+    4300068: group19_pCube284
+    4300070: CornerTrim1
+    4300072: polySurface67
+    4300074: group19_pCube284
+    4300076: CornerTrim1
+    4300078: polySurface131
+    4300080: CornerTrim3
+    4300082: group19_pCube286
+    4300084: ShortTrim4
+    4300086: polySurface129
+    4300088: ShortTrim5
+    4300090: polySurface130
+    4300092: LongTrim8
+    4300094: LongTrim9
+    4300096: wall17
+    4300098: wall18
+    4300100: longWall14
+    4300102: polySurface132
+    4300104: longWall15
+    4300106: polySurface133
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

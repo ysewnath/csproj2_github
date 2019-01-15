@@ -1,0 +1,4 @@
+0-60 - Move
+65-115 - Intimidation_or_ready_to_explode
+120-190 - Flying_Monster_snap_and_ready_to_explode
+195-250 - Flying_Monster_dead_and_flying_in_vacuum
