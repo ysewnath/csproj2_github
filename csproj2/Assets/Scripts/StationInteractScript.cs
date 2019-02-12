@@ -26,6 +26,8 @@ public class StationInteractScript : MonoBehaviour {
     int currentSelection;
     bool interact = false;
 
+    Color blueHighlight = new Color(0, 106, 255);
+
     // Use this for initialization
     void Start()
     {
@@ -115,7 +117,11 @@ public class StationInteractScript : MonoBehaviour {
             }
             else if (Input.GetButtonDown("Enter"))
             {
-                // submit answer
+                // submit answer and log it
+                // unhighlight prev answer
+                //if(questions[currentPage-1].CurrentSelection)
+
+                option_textHandler[currentSelection - 1].color = blueHighlight;
             }
             else if (Input.GetButtonDown("Escape"))
             {

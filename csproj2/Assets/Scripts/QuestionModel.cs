@@ -11,6 +11,7 @@ public class QuestionModel {
     public string OptionC { get; set; }
     public string OptionD { get; set; }
     public string CorrectOption { get; set; }
+    public string CurrentSelection { get; set; }
 
     public bool isAnswered { get; set; }
 
