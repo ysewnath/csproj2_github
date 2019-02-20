@@ -3,40 +3,90 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEditor;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
+using System.Linq;
 using TMPro;
+
+public class Account
+{
+    public string id { get; set; }
+    public string access_token { get; set; }
+    public string permissions { get; set; }
+}
+
 
 public class LoginManager : MonoBehaviour
 {
-    //InputField usernameField, passwordField;
-    //InputField usernameRegisterField, passwordRegisterField, passwordConfirmField;
-    //Text registrationErrorText, registrationCompleteText, submissionText, submissionErrorText;
+    [HideInInspector]
+    public InputField usernameField, passwordField;
+    [HideInInspector]
+    public InputField usernameRegisterField, passwordRegisterField, passwordConfirmField;
+    [HideInInspector]
+    public Text registrationErrorText, registrationCompleteText, submissionText, submissionErrorText;
 
     public GameObject UserInput;
     public GameObject PassInput;
     public GameObject enterBtn;
+    public GameObject closeBtn;
 
     public GameObject messageBox;
     public GameObject loadingText;
     public GameObject failedConnectText;
+    public GameObject connectedText;
+    public GameObject deckText;
 
-    Button enterBtnHandler;
+    public GameObject startBtn;
+    public GameObject optionsBtn;
+    public GameObject exitBtn;
 
-    TMP_InputField userInputHander;
-    TMP_InputField passInputHandler;
+    [HideInInspector]
+    public Button startBtnHandler;
+    [HideInInspector]
+    public Button optionsBtnHandler;
+    [HideInInspector]
+    public Button exitBtnHandler;
 
-    private string createAccountURL = "http://10.171.204.188/ELLEMobile/CreateStudent.php";
-    private string loginAccountURL = "http://10.171.204.188/ELLEMobile/LoginApp.php";
+    public GameObject LoginPrompt;
+    public GameObject StartScreenPromt;
+    public GameObject DeckSelection;
+
+    [HideInInspector]
+    public Button enterBtnHandler;
+    [HideInInspector]
+    public Button closeBtnHandler;
+
+    [HideInInspector]
+    public TMP_InputField userInputHander;
+    [HideInInspector]
+    public TMP_InputField passInputHandler;
+
+    public GameObject loggedInIcon;
+    public GameObject LoggedInAsText;
+
+    public GameObject UserNameText;
+    [HideInInspector]
+    public TextMeshProUGUI userNameTextHandler;
+
+
+    [SerializeField]
+    private SessionManager session;
+
+    private static string baseURL = "https://endlesslearner.com/";
+    private static string createAccountURL = baseURL + "register";
+    private static string loginAccountURL = baseURL + "login";
 
     private bool usernameTaken;
     private bool passwordSaved;
+
+    public bool loggedIn = false;
     // Use this for initialization
     void Start()
     {
         //usernameTaken = false;
+        //session = new SessionManager();
 
         //if (PlayerPrefs.GetString("Username").Length > 0)
         //{
@@ -44,9 +94,25 @@ public class LoginManager : MonoBehaviour
         //    passwordField.text = PlayerPrefs.GetString("Password");
         //}
 
+        ////TODO Actually test connection here!
+        //if (session.access_token.Length > 0)
+        //{
+        //    SceneManager.LoadScene("MainMenu");
+        //}
+
         userInputHander = UserInput.GetComponent<TMP_InputField>();
         passInputHandler = PassInput.GetComponent<TMP_InputField>();
+        passInputHandler.inputType = TMP_InputField.InputType.Password;
         enterBtnHandler = enterBtn.GetComponent<Button>();
+        closeBtnHandler = closeBtn.GetComponent<Button>();
+
+        startBtnHandler = startBtn.GetComponent<Button>();
+        optionsBtnHandler = optionsBtn.GetComponent<Button>();
+        exitBtnHandler = exitBtn.GetComponent<Button>();
+
+        userNameTextHandler = UserNameText.GetComponent<TextMeshProUGUI>();
+
+
 
     }
 
@@ -54,123 +120,174 @@ public class LoginManager : MonoBehaviour
     {
         string username = userInputHander.text;
         //PlayerPrefs.SetString("Password", passwordField.text);
-        string passwordHash = passInputHandler.text.GetHashCode().ToString();
-        enterBtnHandler.interactable = false;
+        string password = passInputHandler.text;
+
         messageBox.SetActive(true);
         loadingText.SetActive(true);
         failedConnectText.SetActive(false);
-        StartCoroutine(LoginAccount(username, passwordHash));
+        connectedText.SetActive(false);
+        enterBtnHandler.interactable = false;
+        closeBtnHandler.interactable = false;
+
+        userInputHander.interactable = false;
+        passInputHandler.interactable = false;
+
+        StartCoroutine(LoginAccount(username, password));
+
     }
 
     public void OnRegisterClick()
     {
-        //usernameField.text = "";
-        //passwordField.text = "";
+        usernameField.text = "";
+        passwordField.text = "";
+        submissionErrorText.text = "";
+        submissionText.text = "";
     }
 
-    //public void OnSubmitClick()
-    //{
-    //    // Check if username is too long or short
-    //    if (usernameRegisterField.text.Length < 3 || usernameRegisterField.text.Length > 20)
-    //    {
-    //        registrationErrorText.text = "Username must be between 3-20 characters long";
-    //    }
-    //    // Ensures the username is only letters and numbers
-    //    else if (!Regex.IsMatch(usernameRegisterField.text, @"^[a-zA-Z0-9]+$"))
-    //    {
-    //        registrationErrorText.text = "Username can only contain letters and numbers";
-    //    }
-    //    else if (passwordRegisterField.text.Length < 4 || passwordRegisterField.text.Length > 20)
-    //    {
-    //        registrationErrorText.text = "Password must be between 4-20 characters long";
-    //    }
-    //    // Check if passwords match
-    //    else if (passwordRegisterField.text != passwordConfirmField.text)
-    //    {
-    //        registrationErrorText.text = "Passwords do not match";
-    //    }
-    //    // Account registration information is valid
-    //    else
-    //    {
-    //        string passwordHash = passwordRegisterField.text.GetHashCode().ToString();
-    //        StartCoroutine(RegisterAccount(usernameRegisterField.text, passwordHash));
-    //    }
-
-    //}
-
-    //public void OnBackClick()
-    //{
-    //    usernameRegisterField.text = "";
-    //    passwordRegisterField.text = "";
-    //    passwordConfirmField.text = "";
-    //    registrationErrorText.text = "";
-    //    registrationCompleteText.text = "";
-    //}
-
-    //IEnumerator RegisterAccount(string username, string passwordHash)
-    //{
-    //    WWWForm registerForm = new WWWForm();
-
-    //    // Fields must be the same as they are in the PHP script on the server
-    //    registerForm.AddField("usernamePost", username);
-    //    registerForm.AddField("passwordPost", passwordHash);
-
-    //    WWW www = new WWW(createAccountURL, registerForm);
-    //    yield return www;
-
-    //    if (www.text.ToString().Contains("User already exists"))
-    //    {
-    //        registrationErrorText.text = "Username already exists";
-    //        registrationCompleteText.text = "";
-    //        usernameTaken = true;
-    //    }
-    //    else
-    //    {
-    //        registrationErrorText.text = "";
-    //        registrationCompleteText.text = "Registration Complete!";
-    //    }
-
-    //    // Resets the password fields
-    //    //passwordRegisterField.text = "";
-    //    //passwordConfirmField.text = "";
-    //}
-
-    IEnumerator LoginAccount(string username, string passwordHash)
+    public void OnSubmitClick()
     {
-        Debug.Log("Started login coroutine");
-        WWWForm registerForm = new WWWForm();
-
-        // Fields must be the same as they are in the PHP script on the server
-        registerForm.AddField("usernamePost", username);
-        registerForm.AddField("passwordPost", passwordHash);
-
-        WWW www = new WWW(loginAccountURL, registerForm);
-        yield return www;
-        Debug.Log("phase 1");
-
-        Debug.Log(www.url);
-
-        if (www.text.Contains("Success"))
+        // Check if username is too long or short
+        if (usernameRegisterField.text.Length < 2 || usernameRegisterField.text.Length > 8)
         {
-            Debug.Log("connected");
-            string[] terms = www.text.Split('|');
-            PlayerPrefs.SetInt("UserID", int.Parse(terms[1].TrimEnd(';')));
-            PlayerPrefs.SetString("Username", username);
-            //submissionText.text = terms[0] + " - logging in...";
-            //submissionErrorText.text = "";
-            SceneManager.LoadScene("MainMenu");
+            registrationErrorText.text = "Username must be between 2-8 characters long";
+        }
+        // Ensures the username is only letters and numbers
+        else if (!Regex.IsMatch(usernameRegisterField.text, @"^[a-zA-Z0-9]+$"))
+        {
+            registrationErrorText.text = "Username can only contain letters and numbers";
+        }
+        else if (passwordRegisterField.text.Length < 4 || passwordRegisterField.text.Length > 20)
+        {
+            registrationErrorText.text = "Password must be between 4-20 characters long";
+        }
+        // Check if passwords match
+        else if (passwordRegisterField.text != passwordConfirmField.text)
+        {
+            registrationErrorText.text = "Passwords do not match";
+        }
+        // Account registration information is valid
+        else
+        {
+            string password = passwordRegisterField.text;
 
+            StartCoroutine(RegisterAccount(usernameRegisterField.text, password));
+        }
+    }
+
+    public void OnBackClick()
+    {
+        usernameRegisterField.text = "";
+        passwordRegisterField.text = "";
+        passwordConfirmField.text = "";
+        registrationErrorText.text = "";
+        registrationCompleteText.text = "";
+        usernameRegisterField.text = "";
+        passwordRegisterField.text = "";
+        passwordConfirmField.text = "";
+        submissionErrorText.text = "";
+        submissionText.text = "";
+    }
+
+    IEnumerator RegisterAccount(string username, string passwordHash)
+    {
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>
+        {
+            // Fields must be the same as they are in the Python script on the server
+            new MultipartFormDataSection("username", "ii"),
+            new MultipartFormDataSection("password", "ii"),
+        };
+
+        UnityWebRequest www = UnityWebRequest.Post(createAccountURL, formData);
+        yield return www;
+
+        if (www.downloadHandler.text.ToString().Contains("User already exists"))
+        {
+            registrationErrorText.text = "Username already exists";
+            registrationCompleteText.text = "";
+            usernameTaken = true;
         }
         else
         {
-            //submissionErrorText.text = www.text;
-            Debug.Log("failed to connect");
-            //Debug.Log(www.url);
+            registrationErrorText.text = "";
+            registrationCompleteText.text = "Registration Complete!";
+        }
+
+        // Resets the password fields
+        passwordRegisterField.text = "";
+        passwordConfirmField.text = "";
+    }
+
+    IEnumerator LoginAccount(string username, string password)
+    {
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>
+        {
+            // Fields must be the same as they are in the Python script on the server
+            new MultipartFormDataSection("username", username),
+            new MultipartFormDataSection("password", password),
+        };
+
+        UnityWebRequest www = UnityWebRequest.Post(loginAccountURL, formData);
+        yield return www.SendWebRequest();
+
+        string dat = www.downloadHandler.text;
+
+        if (!dat.Contains("Invalid credentials!") && !dat.Equals(""))
+        {
+            connectedText.SetActive(true);
+            loadingText.SetActive(false);
+
+            Account user = JsonConvert.DeserializeObject<Account>(dat);
+            //submissionText.text = user.id + " - logging in...";
+            //submissionErrorText.text = "";
+            session.access_token = user.access_token;
+            session.id = user.id;
+            Debug.Log(user.access_token);
+
+            yield return new WaitForSeconds(1);
+            yield return StartCoroutine(GetDeckNames());
+            EditorUtility.SetDirty(session);
+            //SceneManager.LoadScene("MainMenu");
+        }
+        else
+        {
+            //submissionErrorText.text = dat;
             //submissionText.text = "";
-            enterBtnHandler.interactable = true;
             loadingText.SetActive(false);
             failedConnectText.SetActive(true);
+            enterBtnHandler.interactable = true;
+            closeBtnHandler.interactable = true;
+
+            userInputHander.interactable = true;
+            passInputHandler.interactable = true;
+
         }
     }
 
+
+
+
+    IEnumerator GetDeckNames()
+    {
+        connectedText.SetActive(false);
+        deckText.SetActive(true);
+        Debug.Log("get deck names");
+        UnityWebRequest www = UnityWebRequest.Get(baseURL + "decks");
+        www.SetRequestHeader("Authorization", "Bearer " + session.access_token);
+        yield return www.SendWebRequest();
+
+        string decks = www.downloadHandler.text;
+
+        if (!decks.Contains("Invalid credentials!"))
+        {
+            DecksJson deckLists = JsonConvert.DeserializeObject<DecksJson>(decks);
+            session.decks = deckLists.ids.Zip(deckLists.names, (a, b) => new DeckInfo(a, b)).ToList();
+            //Debug.Log(decks);
+            //EditorUtility.SetDirty(session);
+            yield return StartCoroutine(session.DownloadDecks());
+        }
+        else
+        {
+            Debug.Log("error getting decks");
+        }
+    }
 }

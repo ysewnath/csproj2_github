@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c0936795b0bca4b81a50c02bcb0950, type: 3}
+  m_Name: session
+  m_EditorClassIdentifier: 
+  access_token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTA2Mjc1NzAsIm5iZiI6MTU1MDYyNzU3MCwianRpIjoiMjIwMjUyODEtZjU3NS00ZDE1LTgxOGUtMTYxZmMzODMwZTJiIiwiaWRlbnRpdHkiOjMwMTMsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.0SYvDY6oD01QMRk_IzeMAFNRK3A2lzkP58_AajXsgF8
+  id: 3013
+  baseURL: https://endlesslearner.com/
+  decks:
+  - id: 300
+    name: Spanish Fundamental Vocab 1
+  - id: 301
+    name: Portuguese Basics
+  - id: 304
+    name: "\u65E5\u672C\u8A9E"
+  loginManager: {fileID: 0}

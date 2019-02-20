@@ -6,43 +6,72 @@ using Cinemachine;
 
 public class BtnHandlerScript : MonoBehaviour {
 
-    public GameObject loginPrompt;
-    public GameObject startBtn;
-    public GameObject optionsBtn;
-    public GameObject exitBtn;
+    public GameObject loginManger;
+    LoginManager loginManagerHandler;
 
     public CinemachineVirtualCamera vcam8;
 
-    Button startBtnHandler;
-    Button optionsBtnHandler;
-    Button exitBtnHandler;
 
     bool isLoggedin = false;
 
     private void Start()
     {
-        startBtnHandler = startBtn.GetComponent<Button>();
-        optionsBtnHandler = optionsBtn.GetComponent<Button>();
-        exitBtnHandler = exitBtn.GetComponent<Button>();
+        loginManagerHandler = loginManger.GetComponent<LoginManager>();
     }
 
     public void StartBtn_click()
     {
-        if(!isLoggedin)
+        if(!loginManagerHandler.loggedIn)
         {
-            loginPrompt.SetActive(true);
-            startBtnHandler.interactable = false;
-            optionsBtnHandler.interactable = false;
-            exitBtnHandler.interactable = false;
+            // display login screen
+            loginManagerHandler.LoginPrompt.SetActive(true);
+
+            loginManagerHandler.userInputHander.interactable = true;
+            loginManagerHandler.passInputHandler.interactable = true;
+            loginManagerHandler.enterBtnHandler.interactable = true;
+            loginManagerHandler.closeBtnHandler.interactable = true;
+
+
         }
-        
+        else
+        {
+            // display path screen
+            loginManagerHandler.StartScreenPromt.SetActive(true);
+            loginManagerHandler.DeckSelection.SetActive(true);
+        }
+
+        loginManagerHandler.startBtnHandler.interactable = false;
+        loginManagerHandler.optionsBtnHandler.interactable = false;
+        loginManagerHandler.exitBtnHandler.interactable = false;
+
         vcam8.Priority = 17;
 
     }
 
-    public void EnterBtn_click()
+    public void OnCloseBtnClick_path()
     {
+        loginManagerHandler.StartScreenPromt.SetActive(false);
+        loginManagerHandler.DeckSelection.SetActive(false);
 
+        loginManagerHandler.startBtnHandler.interactable = true;
+        loginManagerHandler.optionsBtnHandler.interactable = true;
+        loginManagerHandler.exitBtnHandler.interactable = true;
+    }
+
+    public void OnCloseBtnClick_login()
+    {
+        // close login prompt
+        loginManagerHandler.LoginPrompt.SetActive(false);
+        loginManagerHandler.messageBox.SetActive(false);
+        loginManagerHandler.startBtnHandler.interactable = true;
+        loginManagerHandler.optionsBtnHandler.interactable = true;
+        loginManagerHandler.exitBtnHandler.interactable = true;
+
+    }
+
+    public void EnterBtnClick_login()
+    {
+        loginManagerHandler.OnLoginClick();
 
     }
 }
