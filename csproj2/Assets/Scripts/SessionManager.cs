@@ -20,8 +20,12 @@ public class SessionManager : ScriptableObject
     [SerializeField]
     public string baseURL = "https://endlesslearner.com/";
 
+    [SerializeField]
+    public DeckInfo selectedDeck;
+
     public List<DeckInfo> decks;
 
+    [HideInInspector]
     public GameObject loginManager;
     LoginManager loginManagerHandler;
 
@@ -77,22 +81,21 @@ public class SessionManager : ScriptableObject
             Debug.Log(t);
         }
         //EditorUtility.SetDirty(this);
-        ParseDecks();
+        ShowLevelSelect();
     }
 
-    public void ParseDecks()
+    public void ShowLevelSelect()
     {
 
-        //
-        // simulate parsing
-        //
         loginManager = GameObject.Find("LoginHandler");
         loginManagerHandler = loginManager.GetComponent<LoginManager>();
         loginManagerHandler.LoginPrompt.SetActive(false);
         loginManagerHandler.messageBox.SetActive(false);
         loginManagerHandler.deckText.SetActive(false);
-        loginManagerHandler.StartScreenPromt.SetActive(true);
+        loginManagerHandler.StartScreenPromt.SetActive(true); 
         loginManagerHandler.DeckSelection.SetActive(true);
+
+        loginManagerHandler.FillOptionsList();
         loginManagerHandler.loggedIn = true;
 
         loginManagerHandler.loggedInIcon.SetActive(true);
@@ -100,7 +103,9 @@ public class SessionManager : ScriptableObject
         loginManagerHandler.UserNameText.SetActive(true);
         loginManagerHandler.userNameTextHandler.text = loginManagerHandler.userInputHander.text.ToUpper();     
         
-        
+        //
+        // fill dropdown options
+        //
 
     }
 }

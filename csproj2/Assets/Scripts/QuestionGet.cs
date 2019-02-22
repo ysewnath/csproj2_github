@@ -2,34 +2,85 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestionGet : MonoBehaviour {
+public class QuestionGet : MonoBehaviour
+{
 
     public List<List<QuestionModel>> questionSets = new List<List<QuestionModel>>();
     Queue<List<QuestionModel>> questionSetsQueue = new Queue<List<QuestionModel>>();
     public List<GameObject> stations;
     StationInteractScript stationInteractScript;
 
+    [SerializeField]
+    private SessionManager session;
+
+    private LanguagePackInterface languagePackInterface;
+
+    private List<string> Buffer = new List<string>();
+    private System.Random r = new System.Random();
+    private System.Random r2 = new System.Random();
+    private int index;
+    private int index2;
+    private string selectedTerm;
+    private int callStack = 0;
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         enabled = false;
 
+        languagePackInterface = new LanguagePackInterface(session.selectedDeck);
+        if (languagePackInterface.Cards.Count > 5)
+        {
+            Debug.Log("successfully retrieved the cards from the csv file");
+        }
+        else
+        {
+            Debug.Log("could not get the cards from the csv file");
+        }
+
         //
-        // get questions from database and put them into sets of 3
+        // dest_term is the word while source_term is the translation
+        //
+
+        // create a chosen buffer list holding 4 possible translations.
+        // If a translation is picked twice, then call the GetTranslationOption() method again and do the check
+
+
+
+        //
+        // get questions from csv and put them into sets of 3
         //
         Queue<QuestionModel> questions = new Queue<QuestionModel>();
 
-        questions.Enqueue(new QuestionModel { Question = "Sample question 1", isAnswered = false, OptionA = "test1 A", OptionB = "test1 B", OptionC = "test1 C", OptionD = "test1 D", CorrectOption = "A"});
-        questions.Enqueue(new QuestionModel { Question = "Sample question 2", isAnswered = false, OptionA = "test2 A", OptionB = "test2 B", OptionC = "test2 C", OptionD = "test2 D", CorrectOption = "A" });
-        questions.Enqueue(new QuestionModel { Question = "Sample question 3", isAnswered = false, OptionA = "test3 A", OptionB = "test3 B", OptionC = "test3 C", OptionD = "test3 D", CorrectOption = "A" });
+        foreach (Card card in languagePackInterface.Cards)
+        {
+            Buffer.Clear();
+            callStack = 0;
+            //
+            // place correct answer
+            //
+            index2 = r2.Next(0, 3);
+            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = (index2 == 0 ? card.sourceTerm : GetTranslation(Buffer)), OptionB = (index2 == 1 ? card.sourceTerm : GetTranslation(Buffer)), OptionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer)), OptionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer)), CorrectOption = card.sourceTerm });
+        }
+
+        //questions.Enqueue(new QuestionModel { Question = "Sample question 1", isAnswered = false, OptionA = "test1 A", OptionB = "test1 B", OptionC = "test1 C", OptionD = "test1 D", CorrectOption = "A"});
+        //questions.Enqueue(new QuestionModel { Question = "Sample question 2", isAnswered = false, OptionA = "test2 A", OptionB = "test2 B", OptionC = "test2 C", OptionD = "test2 D", CorrectOption = "A" });
+        //questions.Enqueue(new QuestionModel { Question = "Sample question 3", isAnswered = false, OptionA = "test3 A", OptionB = "test3 B", OptionC = "test3 C", OptionD = "test3 D", CorrectOption = "A" });
 
         // check if questions are multiple of 3
-        if(!(questions.Count % 3 == 0))
+        if (!(questions.Count % 3 == 0))
         {
-            Debug.Log("total questions are not a multiple of 3");
-            return;
+            questions.Dequeue();
+            Debug.Log("total questions are not a multiple of 3, first dequeue");
+            if (!(questions.Count % 3 == 0))
+            {
+                questions.Dequeue();
+                Debug.Log("total questions are not a multiple of 3, second dequeue");
+            }
+
         }
         // then place 3 questions in each set
-        for(int i = 0; i < stations.Count; i++)
+        for (int i = 0; i < stations.Count; i++)
         {
             List<QuestionModel> questionSetUnit = new List<QuestionModel>();
             questionSetUnit.Add(questions.Dequeue());
@@ -44,11 +95,10 @@ public class QuestionGet : MonoBehaviour {
         //
         questionSets = ShuffleSet(questionSets);
 
-        foreach(List<QuestionModel> questionSet in questionSets)
+        foreach (List<QuestionModel> questionSet in questionSets)
         {
             questionSetsQueue.Enqueue(questionSet);
         }
-
 
         // assign each station a number and distribute questions to each station
         for (int i = 0; i < stations.Count; i++)
@@ -59,9 +109,33 @@ public class QuestionGet : MonoBehaviour {
 
         }
 
+    }
 
+    public string GetTranslation(List<string> Buffer)
+    {
+        callStack++;
+        if (callStack > 10)
+        {
+            Debug.Log("callStack > 10, terminating recursive method");
+            return null;
+        }
+        //
+        // get random source_term from deck
+        // 
+        index = r.Next(0, languagePackInterface.Cards.Count - 1);
+        selectedTerm = languagePackInterface.Cards[index].sourceTerm;
 
+        if (!Buffer.Contains(selectedTerm))
+        {
+            Buffer.Add(selectedTerm);
+            return selectedTerm;
+        }
+        else
+        {
+            GetTranslation(Buffer);
+        }
 
+        return selectedTerm;
     }
 
     public List<List<QuestionModel>> ShuffleSet(List<List<QuestionModel>> aList)

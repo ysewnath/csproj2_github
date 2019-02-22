@@ -70,6 +70,12 @@ public class LoginManager : MonoBehaviour
     [HideInInspector]
     public TextMeshProUGUI userNameTextHandler;
 
+    public GameObject dropdown;
+    [HideInInspector]
+    public Dropdown dropdownHandler;
+
+    public LevelChanger levelchanger;
+
 
     [SerializeField]
     private SessionManager session;
@@ -112,6 +118,8 @@ public class LoginManager : MonoBehaviour
 
         userNameTextHandler = UserNameText.GetComponent<TextMeshProUGUI>();
 
+        dropdownHandler = dropdown.GetComponent<Dropdown>();       
+
 
 
     }
@@ -133,6 +141,41 @@ public class LoginManager : MonoBehaviour
         passInputHandler.interactable = false;
 
         StartCoroutine(LoginAccount(username, password));
+
+    }
+
+    public void TutorialStar()
+    {
+        //
+        // check if deck has enough cards for the level
+        //
+
+
+
+        int menuIndex = dropdownHandler.value;
+        List<Dropdown.OptionData> menuOptions = dropdownHandler.options;
+        string selectedDeckTemp = menuOptions[menuIndex].text;
+        
+        foreach(DeckInfo deck in session.decks)
+        {
+            if(selectedDeckTemp == deck.name)
+            {
+                Debug.Log("found selected deck from dropdown and placed it into scriptable object");
+                session.selectedDeck = deck;
+                break;
+            }
+        }
+        
+        if(session.selectedDeck == null)
+        {
+            Debug.Log("could not find selected deck");
+            return;
+        }
+        
+        //
+        // screen wipe transition and load level;
+        //
+        levelchanger.FadeToLevel(1);
 
     }
 
@@ -245,7 +288,7 @@ public class LoginManager : MonoBehaviour
 
             yield return new WaitForSeconds(1);
             yield return StartCoroutine(GetDeckNames());
-            EditorUtility.SetDirty(session);
+            //EditorUtility.SetDirty(session);
             //SceneManager.LoadScene("MainMenu");
         }
         else
@@ -263,8 +306,13 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-
-
+    public void FillOptionsList()
+    {
+        foreach(DeckInfo deck in session.decks)
+        {
+            dropdownHandler.options.Add(new Dropdown.OptionData() { text = deck.name });
+        }      
+    }
 
     IEnumerator GetDeckNames()
     {

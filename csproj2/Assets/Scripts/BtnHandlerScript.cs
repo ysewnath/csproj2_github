@@ -69,6 +69,29 @@ public class BtnHandlerScript : MonoBehaviour {
 
     }
 
+    public void OnTutorialStarClick()
+    {
+        loginManagerHandler.TutorialStar();
+
+    }
+
+    public void OnNormalStarClick()
+    {
+
+
+    }
+
+    public void OnHardStarClick()
+    {
+
+
+    }
+
+    public void OnExitBtnClick()
+    {
+        Application.Quit();
+    }
+
     public void EnterBtnClick_login()
     {
         loginManagerHandler.OnLoginClick();
