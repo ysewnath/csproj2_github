@@ -42,6 +42,7 @@ public class MovementInput : MonoBehaviour {
 		cam = Camera.main;
 		controller = this.GetComponent<CharacterController> ();
         Cursor.visible = false;
+        moveLock = true;
     }
 	
 	// Update is called once per frame
@@ -64,6 +65,11 @@ public class MovementInput : MonoBehaviour {
         */
 		//Updater
 	}
+
+    public void PlayIntroAnimaton()
+    {
+        anim.SetTrigger("Intro");
+    }
 
 	void PlayerMoveAndRotation() {
 		InputX = Input.GetAxis ("Horizontal");

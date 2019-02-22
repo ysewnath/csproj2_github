@@ -23,10 +23,19 @@ public class QuestionGet : MonoBehaviour
     private string selectedTerm;
     private int callStack = 0;
 
+    public GameObject introTimeline;
+    public GameObject levelChanger;
+    private LevelChanger levelChangerHandler;
+
+    public GameObject player;
+    MovementInput movementInputHandler;
+
     // Use this for initialization
     void Start()
     {
         enabled = false;
+        levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
+        movementInputHandler = player.GetComponent<MovementInput>();
 
         languagePackInterface = new LanguagePackInterface(session.selectedDeck);
         if (languagePackInterface.Cards.Count > 5)
@@ -108,6 +117,14 @@ public class QuestionGet : MonoBehaviour
             stationInteractScript.questions = questionSetsQueue.Dequeue();
 
         }
+
+        //
+        // start introTimeline
+        //
+        levelChangerHandler.FadeInLevel();
+        introTimeline.SetActive(true);
+        movementInputHandler.PlayIntroAnimaton();
+
 
     }
 

@@ -2,26 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveLockScript : MonoBehaviour {
+public class MoveLockScript : MonoBehaviour
+{
 
     public GameObject player;
     MovementInput movementInput;
-    public bool toggleMovement;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         movementInput = player.GetComponent<MovementInput>();
 
     }
 
-    void Update()
+    private void OnEnable()
     {
-        if(toggleMovement)
-        {
-            movementInput.moveLock = false;
-            enabled = false;
-        }
-        
+        movementInput.moveLock = false;
+        enabled = false;
     }
 
 }
