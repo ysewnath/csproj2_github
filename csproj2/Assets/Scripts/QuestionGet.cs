@@ -69,7 +69,7 @@ public class QuestionGet : MonoBehaviour
             // place correct answer
             //
             index2 = r2.Next(0, 3);
-            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = (index2 == 0 ? card.sourceTerm : GetTranslation(Buffer)), OptionB = (index2 == 1 ? card.sourceTerm : GetTranslation(Buffer)), OptionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer)), OptionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer)), CorrectOption = card.sourceTerm });
+            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = (index2 == 0 ? card.sourceTerm : GetTranslation(Buffer,card.sourceTerm)), OptionB = (index2 == 1 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), OptionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), OptionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), CorrectOption = card.sourceTerm });
         }
 
         //questions.Enqueue(new QuestionModel { Question = "Sample question 1", isAnswered = false, OptionA = "test1 A", OptionB = "test1 B", OptionC = "test1 C", OptionD = "test1 D", CorrectOption = "A"});
@@ -128,7 +128,7 @@ public class QuestionGet : MonoBehaviour
 
     }
 
-    public string GetTranslation(List<string> Buffer)
+    public string GetTranslation(List<string> Buffer, string sourceTerm)
     {
         callStack++;
         if (callStack > 10)
@@ -142,14 +142,17 @@ public class QuestionGet : MonoBehaviour
         index = r.Next(0, languagePackInterface.Cards.Count - 1);
         selectedTerm = languagePackInterface.Cards[index].sourceTerm;
 
-        if (!Buffer.Contains(selectedTerm))
+        if(selectedTerm == sourceTerm)
         {
             Buffer.Add(selectedTerm);
-            return selectedTerm;
+        }
+        else if (!Buffer.Contains(selectedTerm))
+        {
+            Buffer.Add(selectedTerm);
         }
         else
         {
-            GetTranslation(Buffer);
+            GetTranslation(Buffer, sourceTerm);
         }
 
         return selectedTerm;
