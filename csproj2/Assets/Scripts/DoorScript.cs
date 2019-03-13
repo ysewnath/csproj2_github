@@ -10,12 +10,20 @@ public class DoorScript : MonoBehaviour {
     public CinemachineVirtualCamera vcam1;
     public bool tutorial = true;
     public GameObject welcome_prompt;
+    public GameObject doorTrigger;
+    EventTrigger doorTriggerHandler;
+
+    private void Start()
+    {
+        doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
+        enabled = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         timeline.SetActive(true);
         StartCoroutine(yeet());
-        enabled = false;
+        
     }
 
     public IEnumerator yeet()
@@ -29,5 +37,6 @@ public class DoorScript : MonoBehaviour {
         {
             welcome_prompt.SetActive(false);
         }
+        doorTriggerHandler.isTrigger = false;
     }
 }

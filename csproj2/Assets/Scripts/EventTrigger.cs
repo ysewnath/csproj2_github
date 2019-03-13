@@ -7,9 +7,14 @@ public class EventTrigger : MonoBehaviour
 {
     public UnityEvent myEvent;
 
+    public bool isTrigger = true;
+
     private void OnTriggerEnter(Collider other)
     {
-        myEvent.Invoke();
+        if (isTrigger)
+        {
+            myEvent.Invoke();
+        }
     }
 
 }
