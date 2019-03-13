@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 //This script requires you to have setup your animator with 3 parameters, "InputMagnitude", "InputX", "InputZ"
 //With a blend tree to control the inputmagnitude and allow blending between animations.
@@ -36,8 +37,11 @@ public class MovementInput : MonoBehaviour {
     private float verticalVel;
     private Vector3 moveVector;
 
-	// Use this for initialization
-	void Start () {
+    public bool crouching = false;
+    public CinemachineVirtualCameraBase vcam_crouch;
+
+    // Use this for initialization
+    void Start () {
 		anim = this.GetComponent<Animator> ();
 		cam = Camera.main;
 		controller = this.GetComponent<CharacterController> ();
@@ -51,6 +55,9 @@ public class MovementInput : MonoBehaviour {
         if(!moveLock)
         {
             InputMagnitude();
+            CrouchCheck();
+            
+
         }
         /*
 		//If you don't need the character grounded then get rid of this part.
@@ -65,6 +72,22 @@ public class MovementInput : MonoBehaviour {
         */
 		//Updater
 	}
+
+    public void CrouchCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !crouching)
+        {
+            anim.SetBool("isCrouching", true);
+            crouching = true;
+            vcam_crouch.Priority = 20;
+        }
+        else if (crouching && Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            anim.SetBool("isCrouching", false);
+            crouching = false;
+            vcam_crouch.Priority = 10;
+        }
+    }
 
     public void PlayIntroAnimaton()
     {

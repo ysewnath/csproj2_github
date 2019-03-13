@@ -9,6 +9,8 @@ public class BtnHandlerScript : MonoBehaviour {
     public GameObject loginManger;
     LoginManager loginManagerHandler;
 
+    public GameObject BypassLoginManager;
+
     public CinemachineVirtualCamera vcam8;
 
 
@@ -83,6 +85,23 @@ public class BtnHandlerScript : MonoBehaviour {
 
     public void OnHardStarClick()
     {
+
+
+    }
+
+    public void OnBypassClick()
+    {
+        loginManagerHandler.BypassedLogin = true;
+        loginManagerHandler.loggedIn = true;
+        loginManagerHandler.LoginPrompt.SetActive(false);
+        BypassLoginManager.SetActive(false);
+
+        loginManagerHandler.startBtnHandler.interactable = true;
+        loginManagerHandler.optionsBtnHandler.interactable = true;
+        loginManagerHandler.exitBtnHandler.interactable = true;
+
+        loginManagerHandler.FillOptionsList();
+
 
 
     }

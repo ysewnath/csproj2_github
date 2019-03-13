@@ -60,6 +60,10 @@ public class QuestionGet : MonoBehaviour
         // get questions from csv and put them into sets of 3
         //
         Queue<QuestionModel> questions = new Queue<QuestionModel>();
+        string optionA;
+        string optionB;
+        string optionC;
+        string optionD;
 
         foreach (Card card in languagePackInterface.Cards)
         {
@@ -69,7 +73,12 @@ public class QuestionGet : MonoBehaviour
             // place correct answer
             //
             index2 = r2.Next(0, 3);
-            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = (index2 == 0 ? card.sourceTerm : GetTranslation(Buffer,card.sourceTerm)), OptionB = (index2 == 1 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), OptionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), OptionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm)), CorrectOption = card.sourceTerm });
+            optionA = (index2 == 0 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
+            optionB = (index2 == 1 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
+            optionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
+            optionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
+
+            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = optionA, OptionB = optionB, OptionC = optionC, OptionD = optionD, CorrectOption = card.sourceTerm });
         }
 
         //questions.Enqueue(new QuestionModel { Question = "Sample question 1", isAnswered = false, OptionA = "test1 A", OptionB = "test1 B", OptionC = "test1 C", OptionD = "test1 D", CorrectOption = "A"});
@@ -144,7 +153,7 @@ public class QuestionGet : MonoBehaviour
 
         if(selectedTerm == sourceTerm)
         {
-            Buffer.Add(selectedTerm);
+            GetTranslation(Buffer, sourceTerm);
         }
         else if (!Buffer.Contains(selectedTerm))
         {
