@@ -24,6 +24,9 @@ public class TriggerHandler : MonoBehaviour
     public GameObject battledroid_prompt1;
     public GameObject battledroid_prompt2;
 
+    public GameObject battledroid1;
+    BattledroidHandler battledroid1Handler;
+
     public GameObject objective1;
     int prompt = 0;
 
@@ -31,6 +34,7 @@ public class TriggerHandler : MonoBehaviour
     {
         doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
         SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
+        battledroid1Handler = battledroid1.GetComponent<BattledroidHandler>();
 
         battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
         battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
@@ -68,6 +72,7 @@ public class TriggerHandler : MonoBehaviour
                 // stop slowmotion
                 //
                 prompt++;
+                battledroid1Handler.enabled = true;
                 BattledroidInfo(false);
             }
 
