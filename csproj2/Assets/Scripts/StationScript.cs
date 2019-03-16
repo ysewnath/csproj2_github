@@ -6,6 +6,8 @@ public class StationScript : MonoBehaviour {
 
     public GameObject station1;
     Animator animator;
+    public bool locked = false;
+
 	// Use this for initialization
 	void Start () {
         animator = station1.GetComponent<Animator>();
@@ -13,12 +15,14 @@ public class StationScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        animator.SetBool("isOpen", true);
+        if(!locked)
+            animator.SetBool("isOpen", true);
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        animator.SetBool("isOpen", false);
+        if (!locked)
+            animator.SetBool("isOpen", false);
     }
 }

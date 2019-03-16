@@ -1346,7 +1346,7 @@ MonoBehaviour:
   FogTransitionSize: 5.04
   MaxLightDistance: 12.37
   AboveFogPercent: 0.35
-  Offset: {x: 8836.282, y: 8836.282, z: 0}
+  Offset: {x: 8849.371, y: 8849.371, z: 0}
 --- !u!1 &176869956
 GameObject:
   m_ObjectHideFlags: 0
@@ -5537,7 +5537,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 512252637}
-  m_LocalRotation: {x: 0.05593037, y: 0.012949585, z: -0.0007254876, w: 0.99835044}
+  m_LocalRotation: {x: 0.055930372, y: 0.01294959, z: -0.0007254879, w: 0.99835044}
   m_LocalPosition: {x: -3.47, y: 6.66, z: 5.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6202,7 +6202,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.08595213, y: 0.0640513, z: -0.0055373358, w: 0.9942228}
+  m_LocalRotation: {x: 0.08595213, y: 0.064051285, z: -0.005537334, w: 0.9942228}
   m_LocalPosition: {x: -3.87, y: 5.5, z: -7.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6369,21 +6369,21 @@ MonoBehaviour:
   RemoveColorBanding: 1
   MatrixVP:
     e00: 1.534783
-    e01: 0
-    e02: -0.19857632
-    e03: 4.5178037
-    e10: -0.060503248
+    e01: 0.0000000014412924
+    e02: -0.19857627
+    e03: 4.517804
+    e10: -0.06050323
     e11: -2.7067134
     e12: -0.46762562
     e13: 11.304577
-    e20: -0.0000025316463
+    e20: -0.0000025316458
     e21: 0.000003437071
     e22: -0.000019566924
     e23: 0.099833205
-    e30: 0.12641065
+    e30: 0.12641062
     e31: -0.17162049
     e32: 0.9770193
-    e33: 8.42858
+    e33: 8.428579
   LastMatrixVP:
     e00: 1.5433306
     e01: -0.0000000044925277
@@ -6454,17 +6454,17 @@ MonoBehaviour:
     e33: 0
   MatrixV:
     e00: 0.99173355
-    e01: 0
-    e02: -0.12831442
-    e03: 2.9192774
-    e10: 0.022021383
+    e01: 9.313226e-10
+    e02: -0.12831439
+    e03: 2.9192777
+    e10: 0.022021376
     e11: 0.98516315
     e12: 0.17020181
     e13: -4.1145296
-    e20: -0.12641065
+    e20: -0.12641062
     e21: 0.17162049
     e22: -0.9770193
-    e23: -8.42858
+    e23: -8.428579
     e30: 0
     e31: 0
     e32: 0
@@ -7397,6 +7397,7 @@ MonoBehaviour:
   - {fileID: 1184767763}
   - {fileID: 185474657}
   - {fileID: 1967272833}
+  locked: 0
 --- !u!135 &631829153
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11285,6 +11286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 730881912}
   indicator1: {fileID: 528890828}
+  returnToPosition: 0
 --- !u!195 &1045170506
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11571,7 +11573,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099224329}
-  m_LocalRotation: {x: 0.08595213, y: 0.06405128, z: -0.0055372654, w: 0.9942229}
+  m_LocalRotation: {x: 0.08595213, y: 0.06405127, z: -0.005537265, w: 0.9942229}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13708,6 +13710,8 @@ MonoBehaviour:
   welcome_prompt: {fileID: 1352661446}
   objective1_prompt: {fileID: 1945347196}
   doorTrigger: {fileID: 2117814256}
+  stationScript: {fileID: 1354617415}
+  stationsInteractScript: {fileID: 631829150}
   TimeHandler: {fileID: 890827037}
   battledroidTimeline: {fileID: 2016789522}
   battledroid_prompt1: {fileID: 358000613}
@@ -14668,6 +14672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   station1: {fileID: 358615155}
+  locked: 0
 --- !u!1 &1355292718
 GameObject:
   m_ObjectHideFlags: 3
@@ -15826,7 +15831,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1447693163}
-  m_LocalRotation: {x: 0.067901336, y: 0.06414119, z: -0.004374436, w: 0.9956185}
+  m_LocalRotation: {x: 0.067901336, y: 0.0641412, z: -0.0043744366, w: 0.9956185}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

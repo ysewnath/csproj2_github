@@ -16,10 +16,14 @@ public class BattledroidHandler : MonoBehaviour
     private NavMeshAgent mNavMeshAgent;
 
     Vector3 lastKnownPosition;
+    Vector3 Battledrid_originalPosition;
     bool isSearching = false;
     bool isPatroling = false;
+    public bool returnToPosition = false;
+    bool returnToPositionFlag = false;
 
     bool seeking = false;
+    bool returning = false;
     bool searching = false;
     bool searchPaused = false;
 
@@ -33,6 +37,7 @@ public class BattledroidHandler : MonoBehaviour
     {
         anim = this.GetComponent<Animator>();
         mNavMeshAgent = this.GetComponent<NavMeshAgent>();
+        Battledrid_originalPosition = this.transform.position;
         enabled = false;
     }
 
@@ -59,42 +64,75 @@ public class BattledroidHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isSearching)
+        {
+            Search();
+        }
+        else if(returnToPosition)
+        {
+            ReturnToOriginalPosition();
+        }
+        else if(isPatroling)
+        {
 
-        Search();
+        }
+
+
+    }
+
+    public void ReturnToOriginalPosition()
+    {
+        mNavMeshAgent.destination = Battledrid_originalPosition;
+
+        if(!returnToPositionFlag)
+        {
+            if (Vector3.Distance(Battledrid_originalPosition, this.transform.position) < .5f)
+            {
+                returnToPositionFlag = true;
+                returning = false;
+            }
+            else
+            {
+                returning = true;
+            }
+            anim.SetBool("followPlayer", returning);
+
+        }
+        else
+        {
+            anim.SetBool("followPlayer", false);
+        }
+
         
     }
 
     public void Search()
     {
-        if (isSearching)
+        mNavMeshAgent.destination = lastKnownPosition;
+
+        if (Vector3.Distance(lastKnownPosition, this.transform.position) < .5f)
         {
-            mNavMeshAgent.destination = lastKnownPosition;
+            anim.SetTrigger("isSearching");
+            seeking = false;
+            isSearching = false;
 
-            if (Vector3.Distance(lastKnownPosition, this.transform.position) < .5f)
+            if (indicator1Handler && !searchPaused)
             {
-                anim.SetTrigger("isSearching");
-                seeking = false;
-                isSearching = false;
-
-                if(indicator1Handler && !searchPaused)
-                {
-                    StartCoroutine(ResumeSearch());
-
-                }
-                else
-                {
-                    isSearching = false;
-                }
+                StartCoroutine(ResumeSearch());
 
             }
             else
             {
-                seeking = true;
+                isSearching = false;
+                returnToPositionFlag = false;
             }
-
-            anim.SetBool("followPlayer", seeking);
-
         }
+        else
+        {
+            seeking = true;
+        }
+
+        anim.SetBool("followPlayer", seeking);
     }
 
     private IEnumerator ResumeSearch()

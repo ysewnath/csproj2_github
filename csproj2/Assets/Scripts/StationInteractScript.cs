@@ -25,6 +25,7 @@ public class StationInteractScript : MonoBehaviour {
     int currentPage;
     int currentSelection;
     bool interact = false;
+    public bool locked = false;
 
     Color blueHighlight = new Color(0, 106, 255);
 
@@ -180,9 +181,11 @@ public class StationInteractScript : MonoBehaviour {
         //
         // display interact UI
         //
-        InteractUI.SetActive(true);
-        enabled = true;
-
+        if(!locked)
+        {
+            InteractUI.SetActive(true);
+            enabled = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -190,7 +193,10 @@ public class StationInteractScript : MonoBehaviour {
         //
         // close interact UI
         //
-        InteractUI.SetActive(false);
-        enabled = false;
+        if(!locked)
+        {
+            InteractUI.SetActive(false);
+            enabled = false;
+        }   
     }
 }

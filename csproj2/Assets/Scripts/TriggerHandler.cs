@@ -15,6 +15,12 @@ public class TriggerHandler : MonoBehaviour
     public GameObject doorTrigger;
     EventTrigger doorTriggerHandler;
 
+    public GameObject stationScript;
+    StationScript stationScriptHandler;
+
+    public GameObject stationsInteractScript;
+    StationInteractScript stationInteractScriptHandler;
+
     public GameObject TimeHandler;
     TimeHandler SlowmotionHandler;
 
@@ -35,6 +41,13 @@ public class TriggerHandler : MonoBehaviour
         doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
         SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
         battledroid1Handler = battledroid1.GetComponent<BattledroidHandler>();
+
+        stationScriptHandler = stationScript.GetComponent<StationScript>();
+        stationInteractScriptHandler = stationsInteractScript.GetComponent<StationInteractScript>();
+
+        // for tutorial
+        stationScriptHandler.locked = true;
+        stationInteractScriptHandler.locked = true;
 
         battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
         battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
@@ -72,8 +85,11 @@ public class TriggerHandler : MonoBehaviour
                 // stop slowmotion
                 //
                 prompt++;
+                battledroid1Handler.returnToPosition = true;
                 battledroid1Handler.enabled = true;
                 BattledroidInfo(false);
+                stationScriptHandler.locked = false;
+                stationInteractScriptHandler.locked = false;
             }
 
         }
