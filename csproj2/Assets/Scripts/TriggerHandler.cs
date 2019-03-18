@@ -14,12 +14,19 @@ public class TriggerHandler : MonoBehaviour
     public GameObject objective1_prompt;
     public GameObject doorTrigger;
     EventTrigger doorTriggerHandler;
+    bool objective1activated = false;
+
+    public GameObject objective1Trigger;
 
     public GameObject stationScript;
     StationScript stationScriptHandler;
 
     public GameObject stationsInteractScript;
     StationInteractScript stationInteractScriptHandler;
+
+    public GameObject stationTutorialPrompt1;
+    public GameObject stationTutorialPrompt2;
+    public GameObject stationTutorialPrompt3;
 
     public GameObject TimeHandler;
     TimeHandler SlowmotionHandler;
@@ -34,7 +41,7 @@ public class TriggerHandler : MonoBehaviour
     BattledroidHandler battledroid1Handler;
 
     public GameObject objective1;
-    int prompt = 0;
+    public int prompt = 0;
 
     private void Start()
     {
@@ -67,16 +74,20 @@ public class TriggerHandler : MonoBehaviour
             if(prompt == 0)
             {
                 welcome_prompt.SetActive(false);
+                Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 1)
             {
                 objective1_prompt.SetActive(false);
+                objective1Trigger.SetActive(false);
+                Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 2)
             {
                 battledroid_prompt1.SetActive(false);
                 battledroid_prompt2.SetActive(true);
                 prompt++;
+                Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 3)
             {
@@ -90,6 +101,47 @@ public class TriggerHandler : MonoBehaviour
                 BattledroidInfo(false);
                 stationScriptHandler.locked = false;
                 stationInteractScriptHandler.locked = false;
+                stationInteractScriptHandler.tutorial = true;
+                objective1_prompt.SetActive(true);
+                Debug.Log("prompt = " + prompt);
+            }
+            else if(prompt == 4)
+            {
+                objective1_prompt.SetActive(false);
+                prompt++;
+                Debug.Log("prompt = " + prompt);
+            }
+            else if(prompt == 6)
+            {
+                stationTutorialPrompt1.SetActive(false);
+                stationTutorialPrompt2.SetActive(true);
+                prompt++;
+                Debug.Log("prompt = " + prompt);
+            }
+            else if(prompt == 7)
+            {
+                stationTutorialPrompt2.SetActive(false);
+                stationTutorialPrompt3.SetActive(true);
+                prompt++;
+                Debug.Log("prompt = " + prompt);
+            }
+            else if (prompt == 8)
+            {
+                stationTutorialPrompt3.SetActive(false);
+                stationInteractScriptHandler.tutorialInProgress = false;
+                stationInteractScriptHandler.tutorial = false;
+
+                prompt++;
+
+                // populate the 3 pages of the question dialog
+                // start at page 1
+                stationInteractScriptHandler.currentPage = 1;
+                stationInteractScriptHandler.currentSelection = 1;
+                stationInteractScriptHandler.option_textHandler[0].rectTransform.localScale = new Vector3(.55f, .55f, .55f);
+                stationInteractScriptHandler.PopulateDialog();
+                stationInteractScriptHandler.interact = true;
+                stationInteractScriptHandler.DialogBox.SetActive(true);
+                Debug.Log("prompt = " + prompt);
             }
 
         }
@@ -133,12 +185,14 @@ public class TriggerHandler : MonoBehaviour
 
     public void Objective1Trigger()
     {
-        Debug.Log("objective1 trigger");
-        objective1_prompt.SetActive(true);
-        objective1.SetActive(true);
-        prompt++;
-
-
+        if(!objective1activated)
+        {
+            Debug.Log("objective1 trigger");
+            objective1_prompt.SetActive(true);
+            objective1.SetActive(true);
+            prompt++;
+            objective1activated = true;
+        }
     }
 
     public IEnumerator yeet()

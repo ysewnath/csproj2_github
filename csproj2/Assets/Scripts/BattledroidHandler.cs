@@ -12,6 +12,9 @@ public class BattledroidHandler : MonoBehaviour
     public GameObject indicator1;
     bool indicator1Handler = false;
 
+    public GameObject detectedPlayer;
+    DetectedHandler detectedPlayerHandler;
+
     private Animator anim;
     private NavMeshAgent mNavMeshAgent;
 
@@ -37,6 +40,7 @@ public class BattledroidHandler : MonoBehaviour
     {
         anim = this.GetComponent<Animator>();
         mNavMeshAgent = this.GetComponent<NavMeshAgent>();
+        detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
         Battledrid_originalPosition = this.transform.position;
         enabled = false;
     }
@@ -48,6 +52,7 @@ public class BattledroidHandler : MonoBehaviour
             Debug.Log("indicator1 on");
             indicator1.SetActive(true);
             indicator1Handler = true;
+            detectedPlayerHandler.detected = true;
             isSearching = true;
 
             //direction = player.position - this.transform.position;
@@ -58,6 +63,7 @@ public class BattledroidHandler : MonoBehaviour
             Debug.Log("indicator1 off");
             indicator1.SetActive(false);
             indicator1Handler = false;
+            detectedPlayerHandler.detected = false;
         }
     }
 
@@ -66,10 +72,12 @@ public class BattledroidHandler : MonoBehaviour
     {
         if (isSearching)
         {
+            detectedPlayerHandler.searchDetected = true;
             Search();
         }
         else if(returnToPosition)
         {
+            detectedPlayerHandler.searchDetected = false;
             ReturnToOriginalPosition();
         }
         else if(isPatroling)

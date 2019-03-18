@@ -4,7 +4,8 @@ using UnityEngine;
 using Cinemachine;
 using TMPro;
 
-public class StationInteractScript : MonoBehaviour {
+public class StationInteractScript : MonoBehaviour
+{
 
     public GameObject InteractUI;
     public GameObject DialogBox;
@@ -20,12 +21,21 @@ public class StationInteractScript : MonoBehaviour {
     TextMeshProUGUI questionTextHandler;
 
     public List<GameObject> option_text;
-    List<TextMeshProUGUI> option_textHandler = new List<TextMeshProUGUI>();
+    public List<TextMeshProUGUI> option_textHandler = new List<TextMeshProUGUI>();
 
-    int currentPage;
-    int currentSelection;
-    bool interact = false;
+    public GameObject detectedPlayer;
+    DetectedHandler detectedPlayerHandler;
+
+    public GameObject stationTutorialPrompt1;
+    public GameObject triggerHandler;
+    TriggerHandler triggerHandlerScript;
+
+    public int currentPage;
+    public int currentSelection;
+    public bool interact = false;
     public bool locked = false;
+    public bool tutorial = false;
+    public bool tutorialInProgress = false;
 
     Color blueHighlight = new Color(0, 106, 255);
 
@@ -35,8 +45,10 @@ public class StationInteractScript : MonoBehaviour {
         anim = player.GetComponent<Animator>();
         movementInput = player.GetComponent<MovementInput>();
         questionTextHandler = questionText.GetComponent<TextMeshProUGUI>();
+        detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
+        triggerHandlerScript = triggerHandler.GetComponent<TriggerHandler>();
 
-        foreach(var option in option_text)
+        foreach (var option in option_text)
         {
             option_textHandler.Add(option.GetComponent<TextMeshProUGUI>());
         }
@@ -50,30 +62,46 @@ public class StationInteractScript : MonoBehaviour {
         //
         // look for user input
         //
-        if(Input.GetButtonDown("Interact") && !interact)
+        if (Input.GetButtonDown("Interact") && !interact)
         {
             // trigger station vcam and player kneel 
-            anim.SetBool("isKneeling",true);
+            anim.SetBool("isKneeling", true);
             movementInput.moveLock = true;
-            InteractUI.SetActive(false);         
+            InteractUI.SetActive(false);
             //enabled = false;
             vcam.Priority = 15;
 
-            // populate the 3 pages of the question dialog
-            // start at page 1
-            currentPage = 1;
-            currentSelection = 1;
-            option_textHandler[0].rectTransform.localScale = new Vector3(.55f,.55f,.55f);
-            PopulateDialog();
-            interact = true;
-            DialogBox.SetActive(true);
+            if(tutorialInProgress)
+            {
+
+            }
+            else if(tutorial)
+            {
+                //
+                // display station tutorial dialog
+                //
+                stationTutorialPrompt1.SetActive(true);
+                triggerHandlerScript.prompt++;
+                tutorialInProgress = true;
+            }
+            else
+            {
+                // populate the 3 pages of the question dialog
+                // start at page 1
+                currentPage = 1;
+                currentSelection = 1;
+                option_textHandler[0].rectTransform.localScale = new Vector3(.55f, .55f, .55f);
+                PopulateDialog();
+                interact = true;
+                DialogBox.SetActive(true);
+            }           
         }
-        if(interact)
+        if (interact)
         {
             if (Input.GetButtonDown("Up"))
             {
                 // prev answer
-                if(currentSelection < 1)
+                if (currentSelection < 1)
                 {
                     Debug.Log("Warning: currentSelection = " + currentSelection);
                 }
@@ -110,7 +138,7 @@ public class StationInteractScript : MonoBehaviour {
             else if (Input.GetButtonDown("Right"))
             {
                 // next page
-                if(currentPage != 3)
+                if (currentPage != 3)
                 {
                     currentPage++;
                     PopulateDialog();
@@ -139,14 +167,14 @@ public class StationInteractScript : MonoBehaviour {
         }
     }
 
-    private void PopulateDialog()
+    public void PopulateDialog()
     {
-        if(currentPage > 3 || currentPage < 1)
+        if (currentPage > 3 || currentPage < 1)
         {
             Debug.Log("Warning: currentPage = " + currentPage);
         }
 
-        if(currentPage == 1)
+        if (currentPage == 1)
         {
             questionTextHandler.text = questions[0].Question;
             option_textHandler[0].text = questions[0].OptionA;
@@ -155,7 +183,7 @@ public class StationInteractScript : MonoBehaviour {
             option_textHandler[3].text = questions[0].OptionD;
 
         }
-        else if(currentPage == 2)
+        else if (currentPage == 2)
         {
             questionTextHandler.text = questions[1].Question;
             option_textHandler[0].text = questions[1].OptionA;
@@ -164,7 +192,7 @@ public class StationInteractScript : MonoBehaviour {
             option_textHandler[3].text = questions[1].OptionD;
 
         }
-        else if(currentPage == 3)
+        else if (currentPage == 3)
         {
             questionTextHandler.text = questions[2].Question;
             option_textHandler[0].text = questions[2].OptionA;
@@ -181,10 +209,19 @@ public class StationInteractScript : MonoBehaviour {
         //
         // display interact UI
         //
-        if(!locked)
+        if (!locked && !detectedPlayerHandler.detected && !detectedPlayerHandler.searchDetected)
         {
             InteractUI.SetActive(true);
             enabled = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (detectedPlayerHandler.detected || detectedPlayerHandler.searchDetected)
+        {
+            InteractUI.SetActive(false);
+            enabled = false;
         }
     }
 
@@ -193,10 +230,8 @@ public class StationInteractScript : MonoBehaviour {
         //
         // close interact UI
         //
-        if(!locked)
-        {
-            InteractUI.SetActive(false);
-            enabled = false;
-        }   
+        InteractUI.SetActive(false);
+        enabled = false;
+
     }
 }
