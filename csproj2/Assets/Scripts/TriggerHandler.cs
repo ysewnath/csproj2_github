@@ -86,7 +86,7 @@ public class TriggerHandler : MonoBehaviour
             {
                 battledroid_prompt1.SetActive(false);
                 battledroid_prompt2.SetActive(true);
-                prompt++;
+                prompt = 3;
                 Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 3)
@@ -95,7 +95,7 @@ public class TriggerHandler : MonoBehaviour
                 //
                 // stop slowmotion
                 //
-                prompt++;
+                prompt = 4;
                 battledroid1Handler.returnToPosition = true;
                 battledroid1Handler.enabled = true;
                 BattledroidInfo(false);
@@ -108,21 +108,21 @@ public class TriggerHandler : MonoBehaviour
             else if(prompt == 4)
             {
                 objective1_prompt.SetActive(false);
-                prompt++;
+                prompt = 5;
                 Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 6)
             {
                 stationTutorialPrompt1.SetActive(false);
                 stationTutorialPrompt2.SetActive(true);
-                prompt++;
+                prompt = 7;
                 Debug.Log("prompt = " + prompt);
             }
             else if(prompt == 7)
             {
                 stationTutorialPrompt2.SetActive(false);
                 stationTutorialPrompt3.SetActive(true);
-                prompt++;
+                prompt = 8;
                 Debug.Log("prompt = " + prompt);
             }
             else if (prompt == 8)
@@ -131,7 +131,7 @@ public class TriggerHandler : MonoBehaviour
                 stationInteractScriptHandler.tutorialInProgress = false;
                 stationInteractScriptHandler.tutorial = false;
 
-                prompt++;
+                prompt = 9;
 
                 // populate the 3 pages of the question dialog
                 // start at page 1
@@ -162,7 +162,7 @@ public class TriggerHandler : MonoBehaviour
             // display dialog
             //
             battledroid_prompt1.SetActive(true);
-            prompt++;
+            prompt = 2;
         }
         else
         {
@@ -190,7 +190,7 @@ public class TriggerHandler : MonoBehaviour
             Debug.Log("objective1 trigger");
             objective1_prompt.SetActive(true);
             objective1.SetActive(true);
-            prompt++;
+            prompt =1;
             objective1activated = true;
         }
     }

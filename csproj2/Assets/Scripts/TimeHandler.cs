@@ -108,7 +108,7 @@ public class TimeHandler : MonoBehaviour
         {
             if (Time.timeScale < 0.00001f)
             {
-                Time.timeScale = 0;
+                Time.timeScale = 0.00001f;
                 Debug.Log("break");
                 break;
             }

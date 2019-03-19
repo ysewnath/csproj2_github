@@ -30,6 +30,19 @@ public class StationInteractScript : MonoBehaviour
     public GameObject triggerHandler;
     TriggerHandler triggerHandlerScript;
 
+    public GameObject rightArrow;
+    Animator rightArrowAnim;
+
+    public GameObject leftArrow;
+    Animator leftArrowAnim;
+
+    public List<GameObject> progress;
+    List<TextMeshProUGUI> progress_handler = new List<TextMeshProUGUI>();
+
+    public GameObject decodeText;
+    public GameObject decodeSymbol;
+    Animator decodeSymbolAnim;
+
     public int currentPage;
     public int currentSelection;
     public bool interact = false;
@@ -38,6 +51,8 @@ public class StationInteractScript : MonoBehaviour
     public bool tutorialInProgress = false;
 
     Color blueHighlight = new Color(0, 106, 255);
+    Color progressColor = new Color(87, 87, 87);
+    Color32 progressBaseColor = new Color(161, 161, 161,225);
 
     // Use this for initialization
     void Start()
@@ -47,7 +62,14 @@ public class StationInteractScript : MonoBehaviour
         questionTextHandler = questionText.GetComponent<TextMeshProUGUI>();
         detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
         triggerHandlerScript = triggerHandler.GetComponent<TriggerHandler>();
+        decodeSymbolAnim = decodeSymbol.GetComponent<Animator>();
 
+        rightArrowAnim = rightArrow.GetComponent<Animator>();
+        leftArrowAnim = leftArrow.GetComponent<Animator>();
+        foreach (var item in progress)
+        {
+            progress_handler.Add(item.GetComponent<TextMeshProUGUI>());
+        }
         foreach (var option in option_text)
         {
             option_textHandler.Add(option.GetComponent<TextMeshProUGUI>());
@@ -71,17 +93,18 @@ public class StationInteractScript : MonoBehaviour
             //enabled = false;
             vcam.Priority = 15;
 
-            if(tutorialInProgress)
+            if (tutorialInProgress)
             {
 
             }
-            else if(tutorial)
+            else if (tutorial)
             {
                 //
                 // display station tutorial dialog
                 //
+                triggerHandlerScript.objective1_prompt.SetActive(false);
                 stationTutorialPrompt1.SetActive(true);
-                triggerHandlerScript.prompt++;
+                triggerHandlerScript.prompt = 6;
                 tutorialInProgress = true;
             }
             else
@@ -94,7 +117,7 @@ public class StationInteractScript : MonoBehaviour
                 PopulateDialog();
                 interact = true;
                 DialogBox.SetActive(true);
-            }           
+            }
         }
         if (interact)
         {
@@ -131,6 +154,7 @@ public class StationInteractScript : MonoBehaviour
                 // prev page
                 if (currentPage != 1)
                 {
+                    leftArrowAnim.SetTrigger("play");
                     currentPage--;
                     PopulateDialog();
                 }
@@ -138,8 +162,9 @@ public class StationInteractScript : MonoBehaviour
             else if (Input.GetButtonDown("Right"))
             {
                 // next page
-                if (currentPage != 3)
+                if (currentPage != 4)
                 {
+                    rightArrowAnim.SetTrigger("play");
                     currentPage++;
                     PopulateDialog();
                 }
@@ -149,8 +174,15 @@ public class StationInteractScript : MonoBehaviour
                 // submit answer and log it
                 // unhighlight prev answer
                 //if(questions[currentPage-1].CurrentSelection)
+                if(currentPage == 4)
+                {
+                    decodeSymbolAnim.SetTrigger("play");
 
-                option_textHandler[currentSelection - 1].color = blueHighlight;
+                }
+                else
+                {
+                    option_textHandler[currentSelection - 1].color = blueHighlight;
+                }   
             }
             else if (Input.GetButtonDown("Escape"))
             {
@@ -167,15 +199,27 @@ public class StationInteractScript : MonoBehaviour
         }
     }
 
+    private void CheckProgress()
+    {
+        // refresh progress colors
+        foreach (var item in progress_handler)
+        {
+            item.color = Color.gray;
+
+        }
+        progress_handler[currentPage - 1].color = Color.cyan;
+    }
+
     public void PopulateDialog()
     {
-        if (currentPage > 3 || currentPage < 1)
+        if (currentPage > 4 || currentPage < 1)
         {
             Debug.Log("Warning: currentPage = " + currentPage);
         }
 
         if (currentPage == 1)
         {
+            CheckProgress();
             questionTextHandler.text = questions[0].Question;
             option_textHandler[0].text = questions[0].OptionA;
             option_textHandler[1].text = questions[0].OptionB;
@@ -185,6 +229,7 @@ public class StationInteractScript : MonoBehaviour
         }
         else if (currentPage == 2)
         {
+            CheckProgress();
             questionTextHandler.text = questions[1].Question;
             option_textHandler[0].text = questions[1].OptionA;
             option_textHandler[1].text = questions[1].OptionB;
@@ -194,11 +239,30 @@ public class StationInteractScript : MonoBehaviour
         }
         else if (currentPage == 3)
         {
+            CheckProgress();
+            decodeText.SetActive(false);
+            decodeSymbol.SetActive(false);
             questionTextHandler.text = questions[2].Question;
             option_textHandler[0].text = questions[2].OptionA;
             option_textHandler[1].text = questions[2].OptionB;
             option_textHandler[2].text = questions[2].OptionC;
             option_textHandler[3].text = questions[2].OptionD;
+
+        }
+        else if (currentPage == 4)
+        {
+            //
+            // decode dialog
+            //
+            CheckProgress();
+            decodeText.SetActive(true);
+            decodeSymbol.SetActive(true);
+            questionTextHandler.text = "";
+            option_textHandler[0].text = "";
+            option_textHandler[1].text = "";
+            option_textHandler[2].text = "";
+            option_textHandler[3].text = "";
+
 
         }
 
