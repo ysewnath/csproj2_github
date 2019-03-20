@@ -10,8 +10,8 @@ public class QuestionModel {
     public string OptionB { get; set; }
     public string OptionC { get; set; }
     public string OptionD { get; set; }
-    public string CorrectOption { get; set; }
-    public string CurrentSelection { get; set; }
+    public int CorrectOption { get; set; }
+    public int CurrentSelection { get; set; }
 
     public bool isAnswered { get; set; }
 

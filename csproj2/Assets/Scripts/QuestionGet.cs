@@ -78,7 +78,7 @@ public class QuestionGet : MonoBehaviour
             optionC = (index2 == 2 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
             optionD = (index2 == 3 ? card.sourceTerm : GetTranslation(Buffer, card.sourceTerm));
 
-            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = optionA, OptionB = optionB, OptionC = optionC, OptionD = optionD, CorrectOption = card.sourceTerm });
+            questions.Enqueue(new QuestionModel { Question = card.destTerm, isAnswered = false, OptionA = optionA, OptionB = optionB, OptionC = optionC, OptionD = optionD, CorrectOption = index2 });
         }
 
         //questions.Enqueue(new QuestionModel { Question = "Sample question 1", isAnswered = false, OptionA = "test1 A", OptionB = "test1 B", OptionC = "test1 C", OptionD = "test1 D", CorrectOption = "A"});

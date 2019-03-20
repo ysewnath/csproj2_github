@@ -1875,7 +1875,7 @@ MonoBehaviour:
   FogTransitionSize: 5.04
   MaxLightDistance: 12.37
   AboveFogPercent: 0.35
-  Offset: {x: 12565.035, y: 12565.035, z: 0}
+  Offset: {x: 12565.672, y: 12565.672, z: 0}
 --- !u!1001 &171433809
 Prefab:
   m_ObjectHideFlags: 0
@@ -3520,7 +3520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &312499379
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6432,10 +6432,10 @@ MonoBehaviour:
   MapToLDR: 0
   RemoveColorBanding: 1
   MatrixVP:
-    e00: 0.61887807
-    e01: -0.23976599
-    e02: 1.3975307
-    e03: -46.4762
+    e00: 0.61763066
+    e01: -0.23928274
+    e02: 1.394714
+    e03: -46.382526
     e10: -0.5172571
     e11: -2.6883411
     e12: -0.23216213
@@ -10517,6 +10517,8 @@ MonoBehaviour:
   VerticalAnimTime: 0.2
   StartAnimTime: 0.3
   StopAnimTime: 0.15
+  crouching: 0
+  vcam_crouch: {fileID: 0}
 --- !u!1 &763896100
 GameObject:
   m_ObjectHideFlags: 0
@@ -22872,7 +22874,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1780544587}
-  m_LocalRotation: {x: 0.07452271, y: 0.5343071, z: 0.04736484, w: -0.84066576}
+  m_LocalRotation: {x: 0.074522704, y: 0.534307, z: 0.04736482, w: -0.8406657}
   m_LocalPosition: {x: 6.02, y: 3.73, z: 31.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

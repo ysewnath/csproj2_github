@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using TMPro;
+using System;
 
 public class StationInteractScript : MonoBehaviour
 {
@@ -41,7 +42,13 @@ public class StationInteractScript : MonoBehaviour
 
     public GameObject decodeText;
     public GameObject decodeSymbol;
+    public GameObject decodeSymbol2;
     Animator decodeSymbolAnim;
+    Animator decodeSymbolAnim2;
+
+    public GameObject decode_numCorrect;
+    TextMeshProUGUI decode_numCorrectHandler;
+    Animator decode_numCorrectAnim;
 
     public int currentPage;
     public int currentSelection;
@@ -50,9 +57,11 @@ public class StationInteractScript : MonoBehaviour
     public bool tutorial = false;
     public bool tutorialInProgress = false;
 
+    private int numCorrect = 0;
+
     Color blueHighlight = new Color(0, 106, 255);
     Color progressColor = new Color(87, 87, 87);
-    Color32 progressBaseColor = new Color(161, 161, 161,225);
+    Color32 progressBaseColor = new Color(161, 161, 161, 225);
 
     // Use this for initialization
     void Start()
@@ -63,6 +72,10 @@ public class StationInteractScript : MonoBehaviour
         detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
         triggerHandlerScript = triggerHandler.GetComponent<TriggerHandler>();
         decodeSymbolAnim = decodeSymbol.GetComponent<Animator>();
+        decodeSymbolAnim2 = decodeSymbol2.GetComponent<Animator>();
+
+        decode_numCorrectHandler = decode_numCorrect.GetComponent<TextMeshProUGUI>();
+        decode_numCorrectAnim = decode_numCorrect.GetComponent<Animator>();
 
         rightArrowAnim = rightArrow.GetComponent<Animator>();
         leftArrowAnim = leftArrow.GetComponent<Animator>();
@@ -174,29 +187,89 @@ public class StationInteractScript : MonoBehaviour
                 // submit answer and log it
                 // unhighlight prev answer
                 //if(questions[currentPage-1].CurrentSelection)
-                if(currentPage == 4)
+                if (currentPage == 4)
                 {
+                    interact = false;
+                    Validate();
+                    decode_numCorrectHandler.text = numCorrect + "/3";
+                    decode_numCorrectAnim.SetTrigger("Play");
+                    StartCoroutine(BlockInput());
                     decodeSymbolAnim.SetTrigger("play");
 
                 }
                 else
                 {
+                    // unhighlight previous option
+                    if (questions[currentPage - 1].CurrentSelection != 0)
+                    {
+                        option_textHandler[questions[currentPage - 1].CurrentSelection - 1].color = Color.white;
+
+                    }
+
+                    // highlight option
                     option_textHandler[currentSelection - 1].color = blueHighlight;
-                }   
+
+                    // save option as selected answer for the question
+                    questions[currentPage - 1].CurrentSelection = currentSelection;
+
+                }
             }
             else if (Input.GetButtonDown("Escape"))
             {
-                // exit dialog
-                anim.SetBool("isKneeling", false);
-                vcam.Priority = 10;
-                movementInput.moveLock = false;
-                option_textHandler[currentSelection - 1].rectTransform.localScale = new Vector3(.52f, .52f, .52f);
-                DialogBox.SetActive(false);
-                interact = false;
+                ExitDialog();
+
+
             }
 
 
         }
+    }
+
+    public void ExitDialog()
+    {
+        // exit dialog
+        anim.SetBool("isKneeling", false);
+        vcam.Priority = 10;
+        movementInput.moveLock = false;
+        option_textHandler[currentSelection - 1].rectTransform.localScale = new Vector3(.52f, .52f, .52f);
+        decodeText.SetActive(false);
+        decodeSymbol.SetActive(false);
+        decodeSymbol2.SetActive(false);
+        decode_numCorrect.SetActive(false);
+        DialogBox.SetActive(false);
+        interact = false;
+
+
+    }
+
+    private void Validate()
+    {
+        numCorrect = 0;
+        foreach (var item in questions)
+        {
+            if ((item.CurrentSelection - 1) == item.CorrectOption)
+            {
+                numCorrect++;
+            }
+        }
+    }
+
+    private IEnumerator BlockInput()
+    {
+
+        yield return new WaitForSeconds(.5f);
+        if (numCorrect < 2)
+        {
+            decodeSymbolAnim2.SetTrigger("PlayWrong");
+        }
+        else
+        {
+            decodeSymbolAnim2.SetTrigger("PlayCorrect");
+        }
+        yield return new WaitForSeconds(5f);
+        decodeSymbolAnim2.SetTrigger("Return");
+        decode_numCorrectAnim.SetTrigger("Return");
+        ExitDialog();
     }
 
     private void CheckProgress()
@@ -208,6 +281,32 @@ public class StationInteractScript : MonoBehaviour
 
         }
         progress_handler[currentPage - 1].color = Color.cyan;
+
+        // refresh options colors
+        foreach (var item in option_textHandler)
+        {
+            item.color = Color.white;
+
+        }
+
+        try
+        {
+            // highlight saved answer
+            if (currentPage != 4)
+            {
+                if (questions[currentPage - 1].CurrentSelection != 0)
+                {
+                    option_textHandler[questions[currentPage - 1].CurrentSelection - 1].color = blueHighlight;
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            int yeet = 0;
+        }
+
+
     }
 
     public void PopulateDialog()
@@ -242,6 +341,8 @@ public class StationInteractScript : MonoBehaviour
             CheckProgress();
             decodeText.SetActive(false);
             decodeSymbol.SetActive(false);
+            decodeSymbol2.SetActive(false);
+            decode_numCorrect.SetActive(false);
             questionTextHandler.text = questions[2].Question;
             option_textHandler[0].text = questions[2].OptionA;
             option_textHandler[1].text = questions[2].OptionB;
@@ -257,6 +358,8 @@ public class StationInteractScript : MonoBehaviour
             CheckProgress();
             decodeText.SetActive(true);
             decodeSymbol.SetActive(true);
+            decodeSymbol2.SetActive(true);
+            decode_numCorrect.SetActive(true);
             questionTextHandler.text = "";
             option_textHandler[0].text = "";
             option_textHandler[1].text = "";
