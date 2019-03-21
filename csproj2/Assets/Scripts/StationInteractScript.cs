@@ -75,6 +75,14 @@ public class StationInteractScript : MonoBehaviour
     public GameObject stationScript;
     StationScript stationScriptHandler;
 
+    public GameObject particles1;
+    public GameObject particles1_distortion;
+    ParticleSystem particles1Handler;  
+    ParticleSystem particles1_distortionHandler;
+
+    public GameObject cameraShake;
+    CinemachineImpulseSource cameraShakeHandler;
+
     // Use this for initialization
     void Start()
     {
@@ -87,12 +95,16 @@ public class StationInteractScript : MonoBehaviour
         decodeSymbolAnim2 = decodeSymbol2.GetComponent<Animator>();
 
         decode_lastSymbolHandler = decode_lastSymbol.GetComponent<TextMeshProUGUI>();
+        particles1Handler = particles1.GetComponent<ParticleSystem>();
+        particles1_distortionHandler = particles1_distortion.GetComponent<ParticleSystem>();
 
         stationAnim = station.GetComponent<Animator>();
         stationScriptHandler = stationScript.GetComponent<StationScript>();
 
         decode_numCorrectHandler = decode_numCorrect.GetComponent<TextMeshProUGUI>();
         decode_numCorrectAnim = decode_numCorrect.GetComponent<Animator>();
+
+        cameraShakeHandler = cameraShake.GetComponent<CinemachineImpulseSource>();
 
         rightArrowAnim = rightArrow.GetComponent<Animator>();
         leftArrowAnim = leftArrow.GetComponent<Animator>();
@@ -279,9 +291,9 @@ public class StationInteractScript : MonoBehaviour
         if(isCorrect)
         {
             yield return new WaitForSeconds(.5f);
-            //risingEmbersHandler.Play();
-            yield return new WaitForSeconds(3f);
-            //risingEmbersHandler.Stop();
+            particles1Handler.Play();
+            particles1_distortionHandler.Play();
+            cameraShakeHandler.GenerateImpulse();
 
         }
         else
