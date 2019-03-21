@@ -23,7 +23,11 @@ public class StationScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (detectedPlayerHandler.detected || detectedPlayerHandler.searchDetected)
+        if (locked)
+        {
+
+        }
+        else if (detectedPlayerHandler.detected || detectedPlayerHandler.searchDetected)
             detectedPrompt.SetActive(true);
         else if (!locked)
             animator.SetBool("isOpen", true);
@@ -36,6 +40,11 @@ public class StationScript : MonoBehaviour
         {
             detectedPrompt.SetActive(true);
             animator.SetBool("isOpen", false);
+        }
+        else if(!locked)
+        {
+            detectedPrompt.SetActive(false);
+            animator.SetBool("isOpen", true);
         }
     }
 

@@ -57,11 +57,23 @@ public class StationInteractScript : MonoBehaviour
     public bool tutorial = false;
     public bool tutorialInProgress = false;
 
+    public bool isCorrect = false;
+    public bool finished = false;
+
+    public GameObject station;
+    Animator stationAnim;
+
+    public GameObject decode_lastSymbol;
+    TextMeshProUGUI decode_lastSymbolHandler;
+
     private int numCorrect = 0;
 
     Color blueHighlight = new Color(0, 106, 255);
     Color progressColor = new Color(87, 87, 87);
     Color32 progressBaseColor = new Color(161, 161, 161, 225);
+
+    public GameObject stationScript;
+    StationScript stationScriptHandler;
 
     // Use this for initialization
     void Start()
@@ -73,6 +85,11 @@ public class StationInteractScript : MonoBehaviour
         triggerHandlerScript = triggerHandler.GetComponent<TriggerHandler>();
         decodeSymbolAnim = decodeSymbol.GetComponent<Animator>();
         decodeSymbolAnim2 = decodeSymbol2.GetComponent<Animator>();
+
+        decode_lastSymbolHandler = decode_lastSymbol.GetComponent<TextMeshProUGUI>();
+
+        stationAnim = station.GetComponent<Animator>();
+        stationScriptHandler = stationScript.GetComponent<StationScript>();
 
         decode_numCorrectHandler = decode_numCorrect.GetComponent<TextMeshProUGUI>();
         decode_numCorrectAnim = decode_numCorrect.GetComponent<Animator>();
@@ -194,7 +211,7 @@ public class StationInteractScript : MonoBehaviour
                     decode_numCorrectHandler.text = numCorrect + "/3";
                     decode_numCorrectAnim.SetTrigger("Play");
                     StartCoroutine(BlockInput());
-                    decodeSymbolAnim.SetTrigger("play");
+                    
 
                 }
                 else
@@ -232,12 +249,15 @@ public class StationInteractScript : MonoBehaviour
         vcam.Priority = 10;
         movementInput.moveLock = false;
         option_textHandler[currentSelection - 1].rectTransform.localScale = new Vector3(.52f, .52f, .52f);
+        decode_lastSymbolHandler.color = Color.gray;
         decodeText.SetActive(false);
         decodeSymbol.SetActive(false);
         decodeSymbol2.SetActive(false);
         decode_numCorrect.SetActive(false);
         DialogBox.SetActive(false);
         interact = false;
+        RefreshOptions();
+        
 
 
     }
@@ -254,25 +274,57 @@ public class StationInteractScript : MonoBehaviour
         }
     }
 
+    private IEnumerator StationCutscene(bool isCorrect)
+    {
+        if(isCorrect)
+        {
+            yield return new WaitForSeconds(.5f);
+            //risingEmbersHandler.Play();
+            yield return new WaitForSeconds(3f);
+            //risingEmbersHandler.Stop();
+
+        }
+        else
+        {
+
+
+
+        }
+
+        yield return new WaitForSeconds(1f);
+
+
+    }
+
     private IEnumerator BlockInput()
     {
-
+        decodeSymbolAnim.SetTrigger("play");
         yield return new WaitForSeconds(.5f);
         if (numCorrect < 2)
         {
             decodeSymbolAnim2.SetTrigger("PlayWrong");
+            stationAnim.SetTrigger("lockedWrong");
+            isCorrect = false;
+            locked = true;
+            stationScriptHandler.locked = true;
         }
         else
         {
             decodeSymbolAnim2.SetTrigger("PlayCorrect");
+            stationAnim.SetTrigger("lockedCorrect");
+            isCorrect = true;
+            locked = true;
+            stationScriptHandler.locked = true;
         }
         yield return new WaitForSeconds(5f);
         decodeSymbolAnim2.SetTrigger("Return");
         decode_numCorrectAnim.SetTrigger("Return");
         ExitDialog();
+        StartCoroutine(StationCutscene(isCorrect));
+        
     }
 
-    private void CheckProgress()
+    private void RefreshOptions()
     {
         // refresh progress colors
         foreach (var item in progress_handler)
@@ -289,6 +341,11 @@ public class StationInteractScript : MonoBehaviour
 
         }
 
+    }
+
+    private void CheckProgress()
+    {
+        RefreshOptions();
         try
         {
             // highlight saved answer
@@ -389,6 +446,10 @@ public class StationInteractScript : MonoBehaviour
         {
             InteractUI.SetActive(false);
             enabled = false;
+        }
+        else if (!locked)
+        {
+            enabled = true;
         }
     }
 
