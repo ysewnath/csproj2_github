@@ -24,6 +24,16 @@ public class TriggerHandler : MonoBehaviour
     public GameObject stationsInteractScript;
     StationInteractScript stationInteractScriptHandler;
 
+    public GameObject station2InteractScript;
+    public GameObject station2Script;
+    StationInteractScript station2InteractScriptHandler;
+    StationScript station2ScriptHandler;
+
+    public GameObject station3InteractScript;
+    public GameObject station3Script;
+    StationInteractScript station3InteractScriptHandler;
+    StationScript station3ScriptHandler;
+
     public GameObject stationTutorialPrompt1;
     public GameObject stationTutorialPrompt2;
     public GameObject stationTutorialPrompt3;
@@ -41,7 +51,13 @@ public class TriggerHandler : MonoBehaviour
     BattledroidHandler battledroid1Handler;
 
     public GameObject objective1;
+    public GameObject objective2;
+    public GameObject objective3;
     public int prompt = 0;
+
+    public GameObject stationFinishedDialog1;
+    public GameObject stationFinishedDialog2;
+
 
     private void Start()
     {
@@ -52,9 +68,20 @@ public class TriggerHandler : MonoBehaviour
         stationScriptHandler = stationScript.GetComponent<StationScript>();
         stationInteractScriptHandler = stationsInteractScript.GetComponent<StationInteractScript>();
 
+        station2InteractScriptHandler = station2InteractScript.GetComponent<StationInteractScript>();
+        station2ScriptHandler = station2Script.GetComponent<StationScript>();
+        station3InteractScriptHandler = station3InteractScript.GetComponent<StationInteractScript>();
+        station3ScriptHandler = station3Script.GetComponent<StationScript>();
+
         // for tutorial
         stationScriptHandler.locked = true;
         stationInteractScriptHandler.locked = true;
+
+        station2InteractScriptHandler.locked = true;
+        station2ScriptHandler.locked = true;
+
+        station3InteractScriptHandler.locked = true;
+        station3ScriptHandler.locked = true;
 
         battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
         battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
@@ -130,8 +157,7 @@ public class TriggerHandler : MonoBehaviour
                 stationTutorialPrompt3.SetActive(false);
                 stationInteractScriptHandler.tutorialInProgress = false;
                 stationInteractScriptHandler.tutorial = false;
-
-                prompt = 9;
+                stationInteractScriptHandler.tutorial2 = true;
 
                 // populate the 3 pages of the question dialog
                 // start at page 1
@@ -142,6 +168,33 @@ public class TriggerHandler : MonoBehaviour
                 stationInteractScriptHandler.interact = true;
                 stationInteractScriptHandler.DialogBox.SetActive(true);
                 Debug.Log("prompt = " + prompt);
+            }
+            else if(prompt == 9)
+            {
+                stationFinishedDialog1.SetActive(false);
+                stationFinishedDialog2.SetActive(true);
+                prompt = 10;
+                Debug.Log("prompt = " + prompt);
+
+
+            }
+            else if(prompt == 10)
+            {
+
+                stationFinishedDialog2.SetActive(false);
+                station2ScriptHandler.locked = false;
+                station2InteractScriptHandler.locked = false;
+                station3ScriptHandler.locked = false;
+                station3InteractScriptHandler.locked = false;
+                objective1.SetActive(false);
+                objective2.SetActive(true);
+                objective3.SetActive(true);
+                station3InteractScriptHandler.anim.SetBool("isKneeling", false);
+                station3InteractScriptHandler.tutorial2 = false;
+                prompt = 11;
+                Debug.Log("prompt = " + prompt);
+
+
             }
 
         }

@@ -70,7 +70,12 @@ public class BattledroidHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSearching)
+        if(detectedPlayerHandler.isInteracting)
+        {
+            detectedPlayerHandler.searchDetected = false;
+            ReturnToOriginalPosition();
+        }
+        else if (isSearching)
         {
             detectedPlayerHandler.searchDetected = true;
             Search();

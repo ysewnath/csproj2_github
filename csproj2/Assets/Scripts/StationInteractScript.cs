@@ -13,7 +13,7 @@ public class StationInteractScript : MonoBehaviour
     public GameObject player;
     public CinemachineVirtualCamera vcam;
     MovementInput movementInput;
-    Animator anim;
+    public Animator anim;
     QuestionGet questionGet;
     public int stationID;
     public List<QuestionModel> questions;
@@ -57,8 +57,8 @@ public class StationInteractScript : MonoBehaviour
     public bool tutorial = false;
     public bool tutorialInProgress = false;
 
+    public bool tutorial2 = false;
     public bool isCorrect = false;
-    public bool finished = false;
 
     public GameObject station;
     Animator stationAnim;
@@ -148,6 +148,7 @@ public class StationInteractScript : MonoBehaviour
                 stationTutorialPrompt1.SetActive(true);
                 triggerHandlerScript.prompt = 6;
                 tutorialInProgress = true;
+                detectedPlayerHandler.isInteracting = true;
             }
             else
             {
@@ -158,6 +159,7 @@ public class StationInteractScript : MonoBehaviour
                 option_textHandler[0].rectTransform.localScale = new Vector3(.55f, .55f, .55f);
                 PopulateDialog();
                 interact = true;
+                detectedPlayerHandler.isInteracting = true;
                 DialogBox.SetActive(true);
             }
         }
@@ -257,7 +259,15 @@ public class StationInteractScript : MonoBehaviour
     public void ExitDialog()
     {
         // exit dialog
-        anim.SetBool("isKneeling", false);
+        if(tutorial2)
+        {
+            triggerHandlerScript.prompt = 9;
+            triggerHandlerScript.stationFinishedDialog1.SetActive(true);
+        }
+        else
+        {
+            anim.SetBool("isKneeling", false);
+        }
         vcam.Priority = 10;
         movementInput.moveLock = false;
         option_textHandler[currentSelection - 1].rectTransform.localScale = new Vector3(.52f, .52f, .52f);
@@ -268,10 +278,8 @@ public class StationInteractScript : MonoBehaviour
         decode_numCorrect.SetActive(false);
         DialogBox.SetActive(false);
         interact = false;
+        detectedPlayerHandler.isInteracting = false;
         RefreshOptions();
-        
-
-
     }
 
     private void Validate()
@@ -319,6 +327,14 @@ public class StationInteractScript : MonoBehaviour
             isCorrect = false;
             locked = true;
             stationScriptHandler.locked = true;
+            detectedPlayerHandler.stationIndex++;
+            if(detectedPlayerHandler.stationIndex == detectedPlayerHandler.numStations)
+            {
+                //
+                // game over
+                //
+
+            }
         }
         else
         {
@@ -327,8 +343,17 @@ public class StationInteractScript : MonoBehaviour
             isCorrect = true;
             locked = true;
             stationScriptHandler.locked = true;
+            detectedPlayerHandler.numCorrect++;
+            detectedPlayerHandler.stationIndex++;
+            if (detectedPlayerHandler.numCorrect == detectedPlayerHandler.numStations)
+            {
+                //
+                // win condition
+                //
+
+            }
         }
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         decodeSymbolAnim2.SetTrigger("Return");
         decode_numCorrectAnim.SetTrigger("Return");
         ExitDialog();
