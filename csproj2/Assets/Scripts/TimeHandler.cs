@@ -13,6 +13,9 @@ public class TimeHandler : MonoBehaviour
 
     private IEnumerator coroutine;
 
+    public GameObject detectedPlayer;
+    DetectedHandler detectedPlayerHandler;
+
     //private void OnEnable()
     //{
 
@@ -25,6 +28,7 @@ public class TimeHandler : MonoBehaviour
     private void Start()
     {
         coroutine = StartSlowmotion();
+        detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
     }
 
     public void SlowmotionHandler(bool option)
@@ -47,7 +51,7 @@ public class TimeHandler : MonoBehaviour
 
     private IEnumerator StopSlowmotion()
     {
-
+        detectedPlayerHandler.isInteracting = true;
         Debug.Log("started slowmotion stop");
         float counter = 0;
         float duration = 5f; //seconds
@@ -77,12 +81,13 @@ public class TimeHandler : MonoBehaviour
         }
 
         Debug.Log("finished slowmo stop");
+        detectedPlayerHandler.isInteracting = false;
 
     }
 
     private IEnumerator StartSlowmotion()
     {
-
+        detectedPlayerHandler.isInteracting = true;
         Debug.Log("started slowmotion");
         float counter = 0;
         float duration = 15f; //seconds
@@ -119,6 +124,7 @@ public class TimeHandler : MonoBehaviour
         }
 
         Debug.Log("finished slowmo");
+        detectedPlayerHandler.isInteracting = false;
 
     }
 }

@@ -15,6 +15,8 @@ public class DetectedHandler : MonoBehaviour
 
     public bool winCondition = false;
 
+    //public bool pauseHandler = true;
+
     public GameObject findStations_Dialog;
     public GameObject findStations_collider;
 
