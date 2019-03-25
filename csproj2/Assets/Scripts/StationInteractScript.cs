@@ -90,6 +90,8 @@ public class StationInteractScript : MonoBehaviour
     public GameObject objective_gate2;
 
     int tempIndex = 0;
+    public GameObject levelChanger;
+    LevelChanger levelChangerHandler;
 
     // Use this for initialization
     void Start()
@@ -102,6 +104,8 @@ public class StationInteractScript : MonoBehaviour
         decodeSymbolAnim = decodeSymbol.GetComponent<Animator>();
         decodeSymbolAnim2 = decodeSymbol2.GetComponent<Animator>();
         numStatonsDialog_handler = numStationsDialog.GetComponent<TextMeshPro>();
+
+        levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
 
         decode_lastSymbolHandler = decode_lastSymbol.GetComponent<TextMeshProUGUI>();
         particles1Handler = particles1.GetComponent<ParticleSystem>();
@@ -342,13 +346,7 @@ public class StationInteractScript : MonoBehaviour
             locked = true;
             stationScriptHandler.locked = true;
             detectedPlayerHandler.stationIndex++;
-            if(detectedPlayerHandler.stationIndex == detectedPlayerHandler.numStations)
-            {
-                //
-                // game over
-                //
-
-            }
+            
         }
         else
         {
@@ -369,6 +367,14 @@ public class StationInteractScript : MonoBehaviour
                 objective_gate2.SetActive(true);
 
             }
+        }
+
+        if (detectedPlayerHandler.stationIndex == detectedPlayerHandler.numStations && !detectedPlayerHandler.winCondition)
+        {
+            //
+            // game over
+            //
+            levelChangerHandler.FadeToLevel(3);
         }
         enabled = false;
         yield return new WaitForSeconds(3f);

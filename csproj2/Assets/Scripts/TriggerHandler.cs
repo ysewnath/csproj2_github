@@ -248,6 +248,7 @@ public class TriggerHandler : MonoBehaviour
         //
         // play cutscene and animation
         //
+        detectedScript_handler.isInteracting = true;
         Debug.Log("doorTrigger2");
         playerHandler.moveLock = true;
         mNavMeshAgent.Warp(player.transform.position);

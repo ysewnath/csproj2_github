@@ -21,7 +21,7 @@ public class ShowcaseGUI : MonoBehaviour
             Destroy(gameObject);
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         ActivateSurroundings();
 		SceneManager.sceneLoaded += OnLevelLoaded;

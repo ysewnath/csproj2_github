@@ -57,6 +57,7 @@ public class MenuIntroScript : MonoBehaviour
         enabled = false;
         menuStartTimeline.SetActive(true);
         StartCoroutine(MenuHold());
+        Cursor.visible = true;
 
     }
 
