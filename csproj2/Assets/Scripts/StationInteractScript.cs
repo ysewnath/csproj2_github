@@ -83,6 +83,14 @@ public class StationInteractScript : MonoBehaviour
     public GameObject cameraShake;
     CinemachineImpulseSource cameraShakeHandler;
 
+    public GameObject numStationsDialogRoot;
+    public GameObject numStationsDialog;
+    TextMeshPro numStatonsDialog_handler;
+
+    public GameObject objective_gate2;
+
+    int tempIndex = 0;
+
     // Use this for initialization
     void Start()
     {
@@ -93,6 +101,7 @@ public class StationInteractScript : MonoBehaviour
         triggerHandlerScript = triggerHandler.GetComponent<TriggerHandler>();
         decodeSymbolAnim = decodeSymbol.GetComponent<Animator>();
         decodeSymbolAnim2 = decodeSymbol2.GetComponent<Animator>();
+        numStatonsDialog_handler = numStationsDialog.GetComponent<TextMeshPro>();
 
         decode_lastSymbolHandler = decode_lastSymbol.GetComponent<TextMeshProUGUI>();
         particles1Handler = particles1.GetComponent<ParticleSystem>();
@@ -302,16 +311,21 @@ public class StationInteractScript : MonoBehaviour
             particles1Handler.Play();
             particles1_distortionHandler.Play();
             cameraShakeHandler.GenerateImpulse();
+            numStationsDialogRoot.SetActive(true);
 
         }
         else
         {
-
+            
 
 
         }
-
-        yield return new WaitForSeconds(1f);
+        Debug.Log("numStations: " + detectedPlayerHandler.numStations);
+        Debug.Log("stationIndex: " + detectedPlayerHandler.stationIndex);
+        tempIndex = detectedPlayerHandler.numStations - detectedPlayerHandler.stationIndex;
+        numStatonsDialog_handler.text = tempIndex + " remaining";
+        yield return new WaitForSeconds(2.5f);
+        numStationsDialogRoot.SetActive(false);
 
 
     }
@@ -345,14 +359,18 @@ public class StationInteractScript : MonoBehaviour
             stationScriptHandler.locked = true;
             detectedPlayerHandler.numCorrect++;
             detectedPlayerHandler.stationIndex++;
-            if (detectedPlayerHandler.numCorrect == detectedPlayerHandler.numStations)
+            if (detectedPlayerHandler.numCorrect == detectedPlayerHandler.numStations - 1)
             {
                 //
                 // win condition
                 //
+                detectedPlayerHandler.findStations_collider.SetActive(false);
+                detectedPlayerHandler.winCondition = true;
+                objective_gate2.SetActive(true);
 
             }
         }
+        enabled = false;
         yield return new WaitForSeconds(3f);
         decodeSymbolAnim2.SetTrigger("Return");
         decode_numCorrectAnim.SetTrigger("Return");

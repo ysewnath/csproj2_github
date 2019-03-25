@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.Playables;
+using UnityEngine.AI;
 
 public class TriggerHandler : MonoBehaviour
 {
@@ -58,6 +59,15 @@ public class TriggerHandler : MonoBehaviour
     public GameObject stationFinishedDialog1;
     public GameObject stationFinishedDialog2;
 
+    public GameObject detectedScript;
+    DetectedHandler detectedScript_handler;
+
+    public GameObject player;
+    MovementInput playerHandler;
+    private NavMeshAgent mNavMeshAgent;
+    bool enableNavMesh = false;
+    Vector3 waypoint1 = new Vector3(-3, 3, 116.68f);
+
 
     private void Start()
     {
@@ -73,6 +83,10 @@ public class TriggerHandler : MonoBehaviour
         station3InteractScriptHandler = station3InteractScript.GetComponent<StationInteractScript>();
         station3ScriptHandler = station3Script.GetComponent<StationScript>();
 
+        detectedScript_handler = detectedScript.GetComponent<DetectedHandler>();
+        playerHandler = player.GetComponent<MovementInput>();
+        mNavMeshAgent = player.GetComponent<NavMeshAgent>();
+
         // for tutorial
         stationScriptHandler.locked = true;
         stationInteractScriptHandler.locked = true;
@@ -82,6 +96,10 @@ public class TriggerHandler : MonoBehaviour
 
         station3InteractScriptHandler.locked = true;
         station3ScriptHandler.locked = true;
+
+        detectedScript_handler.numStations = 3;
+        //mNavMeshAgent.enabled = false;
+
 
         battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
         battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
@@ -93,7 +111,11 @@ public class TriggerHandler : MonoBehaviour
         //
         // look for user input
         //
-        if (Input.GetButtonDown("Interact2"))
+        if(enableNavMesh)
+        {
+            GoToLocation();
+        }
+        else if (Input.GetButtonDown("Interact2"))
         {
             //
             // dissmiss tutorial dialog prompts
@@ -198,6 +220,40 @@ public class TriggerHandler : MonoBehaviour
             }
 
         }
+    }
+
+    public void GoToLocation()
+    {
+        //mNavMeshAgent.enabled = true;
+        mNavMeshAgent.destination = waypoint1;
+
+        if (Vector3.Distance(waypoint1, this.transform.position) < .5f)
+        {
+            mNavMeshAgent.velocity = new Vector3(0, 0, 0);
+            enableNavMesh = false;
+            stationInteractScriptHandler.anim.SetBool("isPassingThrough", false);
+
+        }
+        else
+        {
+            stationInteractScriptHandler.anim.SetBool("isPassingThrough", true);
+        }
+
+
+
+    }
+
+    public void DoorTrigger2()
+    {
+        //
+        // play cutscene and animation
+        //
+        Debug.Log("doorTrigger2");
+        playerHandler.moveLock = true;
+        mNavMeshAgent.Warp(player.transform.position);
+        enableNavMesh = true;
+
+
     }
 
     public void Objective1_end()
