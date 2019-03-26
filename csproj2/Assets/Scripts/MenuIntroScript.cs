@@ -38,6 +38,8 @@ public class MenuIntroScript : MonoBehaviour
     Color whiteText = new Color(255, 255, 255);
     Color greyText = new Color(135, 135, 135);
 
+    public GameObject bypassBtn;
+
     bool tutorial = false;
 
     // Use this for initialization
@@ -61,81 +63,13 @@ public class MenuIntroScript : MonoBehaviour
 
     }
 
-    //private void Update()
-    //{
-    //    //
-    //    // look for user input
-    //    //
-
-
-    //    if (Input.GetButtonDown("Left"))
-    //    {
-    //        if (currentSelection < 0)
-    //        {
-    //            Debug.Log("warning, current selection is out of bounds, < 0");
-    //        }
-    //        else if(tutorial)
-    //        {
-    //            tutorial_noBtnHandler.color = new Color32(135, 135, 135, 255);
-    //            tutorial_yesBtnHandler.color = new Color32(255, 255, 255, 255);
-
-    //        }
-    //        else if (currentSelection != 0)
-    //        {
-    //            // prev selection
-    //            currentSelection--;
-    //            menu_textHandler[currentSelection + 1].color = new Color32(135, 135, 135,255);
-    //            //menu_textHandler[currentSelection + 1].UpdateFontAsset();
-    //            menu_textHandler[currentSelection].color = new Color32(255, 255, 255,255);
-    //            Debug.Log("currentSelection = " + currentSelection);
-    //        }
-    //    }
-    //    else if (Input.GetButtonDown("Right"))
-    //    {
-    //        if (currentSelection > 2)
-    //        {
-    //            Debug.Log("warning, current selection is out of bounds, > 2");
-    //        }
-    //        else if (tutorial)
-    //        {
-    //            tutorial_noBtnHandler.color = new Color32(255, 255, 255, 255);
-    //            tutorial_yesBtnHandler.color = new Color32(135, 135, 135, 255);
-
-    //        }
-    //        else if (currentSelection != 2)
-    //        {
-    //            // next selection
-    //            currentSelection++;
-    //            menu_textHandler[currentSelection - 1].color = new Color32(135, 135, 135,255);
-    //            //menu_textHandler[currentSelection - 1].UpdateFontAsset();
-    //            menu_textHandler[currentSelection].color = new Color32(255, 255, 255,255);
-    //            Debug.Log("currentSelection = " + currentSelection);
-    //        }
-    //    }
-    //    else if (Input.GetButtonDown("Enter"))
-    //    {
-    //        if(currentSelection == 0)
-    //        {
-    //            // start
-    //            // display tutorial prompt
-    //            //tutorialPrompt.SetActive(true);
-    //            loginPrompt.SetActive(true);
-    //            //tutorial = true;
-    //            vcam8.Priority = 17;
-    //        }
-
-    //    }
-    //    else if (Input.GetButtonDown("Escape"))
-    //    {
-
-    //    }
-    //}
-
-    public void yeet(int test)
+    public void Update()
     {
-
-
-
+        if (Input.GetButtonDown("Bypass"))
+        {
+            Debug.Log("bypass button toggled");
+            bypassBtn.SetActive(true);
+        }
     }
 
     public IEnumerator MenuHold()

@@ -369,6 +369,11 @@ public class StationInteractScript : MonoBehaviour
             }
         }
 
+        
+        enabled = false;
+        yield return new WaitForSeconds(3f);
+        decodeSymbolAnim2.SetTrigger("Return");
+        decode_numCorrectAnim.SetTrigger("Return");
         if (detectedPlayerHandler.stationIndex == detectedPlayerHandler.numStations && !detectedPlayerHandler.winCondition)
         {
             //
@@ -376,10 +381,6 @@ public class StationInteractScript : MonoBehaviour
             //
             levelChangerHandler.FadeToLevel(3);
         }
-        enabled = false;
-        yield return new WaitForSeconds(3f);
-        decodeSymbolAnim2.SetTrigger("Return");
-        decode_numCorrectAnim.SetTrigger("Return");
         ExitDialog();
         StartCoroutine(StationCutscene(isCorrect));
         

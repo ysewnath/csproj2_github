@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOverHandler : MonoBehaviour
+public class EndGameHandler : MonoBehaviour
 {
     public GameObject levelChanger;
     LevelChanger levelChangerHandler;

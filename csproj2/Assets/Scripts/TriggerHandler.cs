@@ -68,6 +68,9 @@ public class TriggerHandler : MonoBehaviour
     bool enableNavMesh = false;
     Vector3 waypoint1 = new Vector3(-3, 3, 116.68f);
 
+    public GameObject levelChanger;
+    LevelChanger levelChangerHandler;
+
 
     private void Start()
     {
@@ -86,6 +89,8 @@ public class TriggerHandler : MonoBehaviour
         detectedScript_handler = detectedScript.GetComponent<DetectedHandler>();
         playerHandler = player.GetComponent<MovementInput>();
         mNavMeshAgent = player.GetComponent<NavMeshAgent>();
+
+        levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
 
         // for tutorial
         stationScriptHandler.locked = true;
@@ -253,8 +258,17 @@ public class TriggerHandler : MonoBehaviour
         playerHandler.moveLock = true;
         mNavMeshAgent.Warp(player.transform.position);
         enableNavMesh = true;
+        StartCoroutine(FadeToStageCompleteScreen());
 
 
+    }
+
+    public IEnumerator FadeToStageCompleteScreen()
+    {
+
+        yield return new WaitForSeconds(20f);
+        levelChangerHandler.FadeToLevel(4);
+        
     }
 
     public void Objective1_end()
