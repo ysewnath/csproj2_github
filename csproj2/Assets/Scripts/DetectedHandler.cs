@@ -25,25 +25,42 @@ public class DetectedHandler : MonoBehaviour
     public GameObject redFlare;
     ParticleSystem redFlareHandler;
     bool toggleFlare = false;
-    bool gameover = false;
+    public bool gameover = false;
 
     Vector3 tempValue = new Vector3(0, 0.46298f, 0.46298f);
     ParticleSystem.EmissionModule emission;
     float tempVal = 0;
     bool startFlare = false;
 
+    public GameObject TimeHandler;
+    TimeHandler SlowmotionHandler;
+
+    bool startSlowmotion = false;
+
+    
+
     private void Start()
     {
         redFlareHandler = redFlare.GetComponent<ParticleSystem>();
+        SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();      
     }
 
     private void Update()
     {
+        if(gameover && !startSlowmotion)
+        {
+            //
+            // start slowmotion
+            //
+            startSlowmotion = true;
+            SlowmotionHandler.SlowmotionHandler(true);      
+        }
+
 
         if (detected && !gameover)
         {
             Debug.Log("detected progress: " + detectedProgress);
-            if (detectedProgress > 80)
+            if (detectedProgress > 200)
             {
 
                 //
@@ -71,6 +88,7 @@ public class DetectedHandler : MonoBehaviour
         else if (detectedProgress != 0)
         {
             detectedProgress--;
+            Debug.Log("detected progress: " + detectedProgress);
 
         }
         else if (detectedProgress == 0)
@@ -80,8 +98,14 @@ public class DetectedHandler : MonoBehaviour
             //
             // debug
             //
-            gameover = false;
+            //gameover = false;
         }
+    }
+
+    public void fullDetect()
+    {
+        gameover = true;
+
     }
 
     public void ShowRequirement(bool option)

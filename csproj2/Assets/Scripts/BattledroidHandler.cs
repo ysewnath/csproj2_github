@@ -52,7 +52,7 @@ public class BattledroidHandler : MonoBehaviour
     {
         if (option)
         {
-            Debug.Log("indicator1 on");
+            //Debug.Log("indicator1 on");
             indicator1.SetActive(true);
             indicator1Handler = true;
             detectedPlayerHandler.detected = true;
@@ -63,7 +63,7 @@ public class BattledroidHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("indicator1 off");
+            //Debug.Log("indicator1 off");
             indicator1.SetActive(false);
             indicator1Handler = false;
             detectedPlayerHandler.detected = false;

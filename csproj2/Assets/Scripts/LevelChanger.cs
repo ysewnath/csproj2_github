@@ -5,12 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class LevelChanger : MonoBehaviour
 {
-    private Animator animator;
+    public Animator animator;
     private int levelToLoad;
 
     private void Start()
     {
         animator = this.GetComponent<Animator>();
+
+        if(SceneManager.GetActiveScene().buildIndex != 1)
+        {
+            animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        }
+        else
+        {
+            animator.updateMode = AnimatorUpdateMode.Normal;
+            Time.timeScale = 1;
+        }
+        
     }
 
     public void FadeToLevel(int levelIndex)

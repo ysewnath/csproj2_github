@@ -13,7 +13,6 @@ public class EndGameHandler : MonoBehaviour
     void Start()
     {
         levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
-        
     }
 
     // Update is called once per frame

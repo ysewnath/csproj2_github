@@ -16,6 +16,9 @@ public class TimeHandler : MonoBehaviour
     public GameObject detectedPlayer;
     DetectedHandler detectedPlayerHandler;
 
+    public GameObject levelChanger;
+    LevelChanger levelChangerHandler;
+
     //private void OnEnable()
     //{
 
@@ -29,6 +32,7 @@ public class TimeHandler : MonoBehaviour
     {
         coroutine = StartSlowmotion();
         detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
+        levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
     }
 
     public void SlowmotionHandler(bool option)
@@ -111,6 +115,12 @@ public class TimeHandler : MonoBehaviour
 
         while (counter < duration)
         {
+            if(Time.timeScale < 0.5 && detectedPlayerHandler.gameover)
+            {
+                Debug.Log("break");
+                break;
+            }
+
             if (Time.timeScale < 0.00001f)
             {
                 Time.timeScale = 0.00001f;
@@ -126,5 +136,9 @@ public class TimeHandler : MonoBehaviour
         Debug.Log("finished slowmo");
         detectedPlayerHandler.isInteracting = false;
 
+        if (detectedPlayerHandler.gameover)
+        {
+            levelChangerHandler.FadeToLevel(3);
+        }
     }
 }
