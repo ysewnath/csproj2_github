@@ -15,10 +15,74 @@ public class DetectedHandler : MonoBehaviour
 
     public bool winCondition = false;
 
+    // if detected Progress == 50, then play is detected, trigger game over
+    public int detectedProgress = 0;
+
     //public bool pauseHandler = true;
 
     public GameObject findStations_Dialog;
     public GameObject findStations_collider;
+    public GameObject redFlare;
+    ParticleSystem redFlareHandler;
+    bool toggleFlare = false;
+    bool gameover = false;
+
+    Vector3 tempValue = new Vector3(0, 0.46298f, 0.46298f);
+    ParticleSystem.EmissionModule emission;
+    float tempVal = 0;
+    bool startFlare = false;
+
+    private void Start()
+    {
+        redFlareHandler = redFlare.GetComponent<ParticleSystem>();
+    }
+
+    private void Update()
+    {
+
+        if (detected && !gameover)
+        {
+            Debug.Log("detected progress: " + detectedProgress);
+            if (detectedProgress > 80)
+            {
+
+                //
+                // game over
+                //
+                gameover = true;
+            }
+
+            //
+            // adjust size of flare based on detectedProgress
+            //
+            if (detectedProgress > 20)
+            {
+                //
+                // start timer
+                //
+                emission = redFlareHandler.emission;
+                emission.rateOverTime = 5f;
+
+
+            }
+
+
+        }
+        else if (detectedProgress != 0)
+        {
+            detectedProgress--;
+
+        }
+        else if (detectedProgress == 0)
+        {
+            emission = redFlareHandler.emission;
+            emission.rateOverTime = 0f;
+            //
+            // debug
+            //
+            gameover = false;
+        }
+    }
 
     public void ShowRequirement(bool option)
     {

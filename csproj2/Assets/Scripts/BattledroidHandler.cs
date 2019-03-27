@@ -38,6 +38,9 @@ public class BattledroidHandler : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //
+        // battledroid is disabled by default
+        //
         anim = this.GetComponent<Animator>();
         mNavMeshAgent = this.GetComponent<NavMeshAgent>();
         detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
@@ -70,7 +73,7 @@ public class BattledroidHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(detectedPlayerHandler.isInteracting)
+        if (detectedPlayerHandler.isInteracting)
         {
             detectedPlayerHandler.searchDetected = false;
             ReturnToOriginalPosition();
@@ -80,12 +83,12 @@ public class BattledroidHandler : MonoBehaviour
             detectedPlayerHandler.searchDetected = true;
             Search();
         }
-        else if(returnToPosition)
+        else if (returnToPosition)
         {
             detectedPlayerHandler.searchDetected = false;
             ReturnToOriginalPosition();
         }
-        else if(isPatroling)
+        else if (isPatroling)
         {
 
         }
@@ -93,11 +96,36 @@ public class BattledroidHandler : MonoBehaviour
 
     }
 
+    public void ColliderEnter()
+    {
+        //
+        // increment detectedProgress
+        //
+
+
+    }
+
+    public void ColliderStay()
+    {
+
+        //
+        // increment detectedProgress
+        //
+        detectedPlayerHandler.detectedProgress++;
+
+
+    }
+
+    public void ColliderExit()
+    {
+
+    }
+
     public void ReturnToOriginalPosition()
     {
         mNavMeshAgent.destination = Battledrid_originalPosition;
 
-        if(!returnToPositionFlag)
+        if (!returnToPositionFlag)
         {
             if (Vector3.Distance(Battledrid_originalPosition, this.transform.position) < .5f)
             {
@@ -116,7 +144,7 @@ public class BattledroidHandler : MonoBehaviour
             anim.SetBool("followPlayer", false);
         }
 
-        
+
     }
 
     public void Search()
