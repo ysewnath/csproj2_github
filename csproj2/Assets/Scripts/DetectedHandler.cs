@@ -37,7 +37,10 @@ public class DetectedHandler : MonoBehaviour
 
     bool startSlowmotion = false;
 
-    
+    [SerializeField]
+    private SessionManager session;
+
+
 
     private void Start()
     {
@@ -52,6 +55,7 @@ public class DetectedHandler : MonoBehaviour
             //
             // start slowmotion
             //
+            session.gameover_detected = true;
             startSlowmotion = true;
             SlowmotionHandler.SlowmotionHandler(true);      
         }

@@ -51,6 +51,9 @@ public class TriggerHandler : MonoBehaviour
     public GameObject battledroid1;
     BattledroidHandler battledroid1Handler;
 
+    public GameObject battledroid2;
+    BattledroidHandler battledroid2Handler;
+
     public GameObject objective1;
     public GameObject objective2;
     public GameObject objective3;
@@ -71,12 +74,15 @@ public class TriggerHandler : MonoBehaviour
     public GameObject levelChanger;
     LevelChanger levelChangerHandler;
 
+    bool enableBattledroid2 = false;
+
 
     private void Start()
     {
         doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
         SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
         battledroid1Handler = battledroid1.GetComponent<BattledroidHandler>();
+        battledroid2Handler = battledroid2.GetComponent<BattledroidHandler>();
 
         stationScriptHandler = stationScript.GetComponent<StationScript>();
         stationInteractScriptHandler = stationsInteractScript.GetComponent<StationInteractScript>();
@@ -105,7 +111,6 @@ public class TriggerHandler : MonoBehaviour
         detectedScript_handler.numStations = 3;
         //mNavMeshAgent.enabled = false;
 
-
         battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
         battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
         //enabled = false;
@@ -113,6 +118,14 @@ public class TriggerHandler : MonoBehaviour
 
     private void Update()
     {
+        if(!enableBattledroid2)
+        {
+            Debug.Log("enabled battledroid2");
+            battledroid2Handler.enabled = true;
+            battledroid2Handler.returnToPosition = true;
+            enableBattledroid2 = true;
+        }
+
         //
         // look for user input
         //
@@ -129,6 +142,7 @@ public class TriggerHandler : MonoBehaviour
             {
                 welcome_prompt.SetActive(false);
                 Debug.Log("prompt = " + prompt);
+                
             }
             else if(prompt == 1)
             {

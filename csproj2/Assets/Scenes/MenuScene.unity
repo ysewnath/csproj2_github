@@ -1875,7 +1875,7 @@ MonoBehaviour:
   FogTransitionSize: 5.04
   MaxLightDistance: 12.37
   AboveFogPercent: 0.35
-  Offset: {x: 12575.717, y: 12575.717, z: 0}
+  Offset: {x: 12581.928, y: 12581.928, z: 0}
 --- !u!1001 &171433809
 Prefab:
   m_ObjectHideFlags: 0
@@ -6432,10 +6432,10 @@ MonoBehaviour:
   MapToLDR: 0
   RemoveColorBanding: 1
   MatrixVP:
-    e00: 0.6188636
-    e01: -0.2397604
-    e02: 1.3974981
-    e03: -46.475117
+    e00: 0.61911106
+    e01: -0.23985626
+    e02: 1.3980569
+    e03: -46.4937
     e10: -0.5172571
     e11: -2.6883411
     e12: -0.23216213

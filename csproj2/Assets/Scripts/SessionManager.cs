@@ -29,6 +29,10 @@ public class SessionManager : ScriptableObject
     public GameObject loginManager;
     LoginManager loginManagerHandler;
 
+    [SerializeField]
+    public bool gameover_detected = false;
+
+
     // TODO: Redownload if hash doesn't match!
     public IEnumerator DownloadDecks()
     {
