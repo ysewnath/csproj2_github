@@ -35,6 +35,9 @@ public class BattledroidHandler : MonoBehaviour
     float lowerPathX;
     float currentPosX;
 
+    public GameObject detectedSound;
+    AudioSource detectedSoundHandler;
+
     // Use this for initialization
     void Start()
     {
@@ -44,6 +47,8 @@ public class BattledroidHandler : MonoBehaviour
         anim = this.GetComponent<Animator>();
         mNavMeshAgent = this.GetComponent<NavMeshAgent>();
         detectedPlayerHandler = detectedPlayer.GetComponent<DetectedHandler>();
+        detectedSoundHandler = detectedSound.GetComponent<AudioSource>();
+
         Battledrid_originalPosition = this.transform.position;
         enabled = false;
     }
@@ -60,6 +65,8 @@ public class BattledroidHandler : MonoBehaviour
 
             //direction = player.position - this.transform.position;
             lastKnownPosition = player.position;
+
+            detectedSoundHandler.Play();
         }
         else
         {

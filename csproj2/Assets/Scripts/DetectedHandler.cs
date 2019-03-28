@@ -40,24 +40,28 @@ public class DetectedHandler : MonoBehaviour
     [SerializeField]
     private SessionManager session;
 
+    public GameObject whispersAudio;
+    AudioSource whisperAudioHandler;
 
+    float whispersVolume = 0;
 
     private void Start()
     {
         redFlareHandler = redFlare.GetComponent<ParticleSystem>();
-        SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();      
+        SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
+        whisperAudioHandler = whispersAudio.GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        if(gameover && !startSlowmotion)
+        if (gameover && !startSlowmotion)
         {
             //
             // start slowmotion
             //
             session.gameover_detected = true;
             startSlowmotion = true;
-            SlowmotionHandler.SlowmotionHandler(true);      
+            SlowmotionHandler.SlowmotionHandler(true);
         }
 
 
@@ -87,12 +91,30 @@ public class DetectedHandler : MonoBehaviour
 
             }
 
+            if (whisperAudioHandler.volume < 1)
+            {
+                whispersVolume = (detectedProgress / 2) / 100f;
+                whisperAudioHandler.volume = whispersVolume;
+                //Debug.Log("whispers volume: " + whispersVolume);
+                //Debug.Log("whispers true volume: " + whisperAudioHandler.volume);
+
+            }
+
 
         }
         else if (detectedProgress != 0)
         {
             detectedProgress--;
             Debug.Log("detected progress: " + detectedProgress);
+
+            if (whisperAudioHandler.volume < 1)
+            {
+                whispersVolume = (detectedProgress / 2) / 100f;
+                whisperAudioHandler.volume = whispersVolume;
+                //Debug.Log("whispers volume: " + whispersVolume);
+                //Debug.Log("whispers true volume: " + whisperAudioHandler.volume);
+
+            }
 
         }
         else if (detectedProgress == 0)

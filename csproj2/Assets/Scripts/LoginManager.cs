@@ -52,6 +52,11 @@ public class LoginManager : MonoBehaviour
     public GameObject LoginPrompt;
     public GameObject StartScreenPromt;
     public GameObject DeckSelection;
+    public GameObject OptionsPrompt;
+
+    public GameObject options_controls;
+    public GameObject options_about;
+    public GameObject options_sound;
 
     [HideInInspector]
     public Button enterBtnHandler;

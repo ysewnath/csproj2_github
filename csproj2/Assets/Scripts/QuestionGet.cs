@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class QuestionGet : MonoBehaviour
 {
@@ -30,12 +31,32 @@ public class QuestionGet : MonoBehaviour
     public GameObject player;
     MovementInput movementInputHandler;
 
+    public GameObject thirdPersonCam;
+    public GameObject thirdPersonCrouchCam;
+
+    CinemachineFreeLook thirdPersonCamHandler;
+    CinemachineFreeLook thirdPersonCrouchCamHandler;
+
     // Use this for initialization
     void Start()
     {
         enabled = false;
         levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
         movementInputHandler = player.GetComponent<MovementInput>();
+
+        thirdPersonCamHandler = thirdPersonCam.GetComponent<CinemachineFreeLook>();
+        thirdPersonCrouchCamHandler = thirdPersonCrouchCam.GetComponent<CinemachineFreeLook>();
+
+        if(session.invertYaxis)
+        {
+            thirdPersonCamHandler.m_YAxis.m_InvertInput = true;
+            thirdPersonCrouchCamHandler.m_YAxis.m_InvertInput = true;
+        }
+        else
+        {
+            thirdPersonCamHandler.m_YAxis.m_InvertInput = false;
+            thirdPersonCrouchCamHandler.m_YAxis.m_InvertInput = false;
+        }
 
         languagePackInterface = new LanguagePackInterface(session.selectedDeck);
         if (languagePackInterface.Cards.Count > 5)
