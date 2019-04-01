@@ -76,22 +76,19 @@ public class TriggerHandler : MonoBehaviour
 
     bool enableBattledroid2 = false;
 
+    bool tutorialStart = false;
+
+    public SessionManager session;
+    bool tutorial2 = false;
+
+    public List<GameObject> battledroids;
+    BattledroidHandler battledroidHandlerTemp;
+    bool enableBattledroids = false;
 
     private void Start()
     {
-        doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
-        SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
-        battledroid1Handler = battledroid1.GetComponent<BattledroidHandler>();
-        battledroid2Handler = battledroid2.GetComponent<BattledroidHandler>();
-
-        stationScriptHandler = stationScript.GetComponent<StationScript>();
-        stationInteractScriptHandler = stationsInteractScript.GetComponent<StationInteractScript>();
-
-        station2InteractScriptHandler = station2InteractScript.GetComponent<StationInteractScript>();
-        station2ScriptHandler = station2Script.GetComponent<StationScript>();
-        station3InteractScriptHandler = station3InteractScript.GetComponent<StationInteractScript>();
-        station3ScriptHandler = station3Script.GetComponent<StationScript>();
-
+        
+        SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();       
         detectedScript_handler = detectedScript.GetComponent<DetectedHandler>();
         playerHandler = player.GetComponent<MovementInput>();
         mNavMeshAgent = player.GetComponent<NavMeshAgent>();
@@ -99,144 +96,186 @@ public class TriggerHandler : MonoBehaviour
         levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
 
         // for tutorial
-        stationScriptHandler.locked = true;
-        stationInteractScriptHandler.locked = true;
+        if(session.tutorial)
+        {
+            doorTriggerHandler = doorTrigger.GetComponent<EventTrigger>();
+            stationScriptHandler = stationScript.GetComponent<StationScript>();
+            stationInteractScriptHandler = stationsInteractScript.GetComponent<StationInteractScript>();
+            station2InteractScriptHandler = station2InteractScript.GetComponent<StationInteractScript>();
+            station2ScriptHandler = station2Script.GetComponent<StationScript>();
+            station3InteractScriptHandler = station3InteractScript.GetComponent<StationInteractScript>();
 
-        station2InteractScriptHandler.locked = true;
-        station2ScriptHandler.locked = true;
+            station3ScriptHandler = station3Script.GetComponent<StationScript>();
+            battledroid1Handler = battledroid1.GetComponent<BattledroidHandler>();
+            battledroid2Handler = battledroid2.GetComponent<BattledroidHandler>();
 
-        station3InteractScriptHandler.locked = true;
-        station3ScriptHandler.locked = true;
+            stationScriptHandler.locked = true;
+            stationInteractScriptHandler.locked = true;
 
-        detectedScript_handler.numStations = 3;
-        //mNavMeshAgent.enabled = false;
+            station2InteractScriptHandler.locked = true;
+            station2ScriptHandler.locked = true;
 
-        battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
-        battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
-        //enabled = false;
+            station3InteractScriptHandler.locked = true;
+            station3ScriptHandler.locked = true;
+
+            detectedScript_handler.numStations = 3;
+            //mNavMeshAgent.enabled = false;
+
+            battledroidTimelineHandler = battledroidTimeline.GetComponent<PlayableDirector>();
+            battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
+            //enabled = false;
+            tutorial2 = true;
+        }
+
+
     }
 
     private void Update()
     {
-        if(!enableBattledroid2)
+        if(!enableBattledroids && !tutorial2)
         {
-            Debug.Log("enabled battledroid2");
-            battledroid2Handler.enabled = true;
-            battledroid2Handler.returnToPosition = true;
-            enableBattledroid2 = true;
+            EnableBattledroids();
+            enableBattledroids = true;
+            Debug.Log("enabled Battledroids");
         }
 
         //
         // look for user input
         //
-        if(enableNavMesh)
+        if (enableNavMesh)
         {
             GoToLocation();
         }
-        else if (Input.GetButtonDown("Interact2"))
+        else if(tutorial2)
         {
-            //
-            // dissmiss tutorial dialog prompts
-            //
-            if(prompt == 0)
+            if (!enableBattledroid2)
             {
-                welcome_prompt.SetActive(false);
-                Debug.Log("prompt = " + prompt);
-                
+                Debug.Log("enabled battledroid2");
+                battledroid2Handler.enabled = true;
+                battledroid2Handler.returnToPosition = true;
+                enableBattledroid2 = true;
             }
-            else if(prompt == 1)
+
+
+            else if (Input.GetButtonDown("Interact2"))
             {
-                objective1_prompt.SetActive(false);
-                objective1Trigger.SetActive(false);
-                Debug.Log("prompt = " + prompt);
-            }
-            else if(prompt == 2)
-            {
-                battledroid_prompt1.SetActive(false);
-                battledroid_prompt2.SetActive(true);
-                prompt = 3;
-                Debug.Log("prompt = " + prompt);
-            }
-            else if(prompt == 3)
-            {
-                battledroid_prompt2.SetActive(false);
                 //
-                // stop slowmotion
+                // dissmiss tutorial dialog prompts
                 //
-                prompt = 4;
-                battledroid1Handler.returnToPosition = true;
-                battledroid1Handler.enabled = true;
-                BattledroidInfo(false);
-                stationScriptHandler.locked = false;
-                stationInteractScriptHandler.locked = false;
-                stationInteractScriptHandler.tutorial = true;
-                objective1_prompt.SetActive(true);
-                Debug.Log("prompt = " + prompt);
-            }
-            else if(prompt == 4)
-            {
-                objective1_prompt.SetActive(false);
-                prompt = 5;
-                Debug.Log("prompt = " + prompt);
-            }
-            else if(prompt == 6)
-            {
-                stationTutorialPrompt1.SetActive(false);
-                stationTutorialPrompt2.SetActive(true);
-                prompt = 7;
-                Debug.Log("prompt = " + prompt);
-            }
-            else if(prompt == 7)
-            {
-                stationTutorialPrompt2.SetActive(false);
-                stationTutorialPrompt3.SetActive(true);
-                prompt = 8;
-                Debug.Log("prompt = " + prompt);
-            }
-            else if (prompt == 8)
-            {
-                stationTutorialPrompt3.SetActive(false);
-                stationInteractScriptHandler.tutorialInProgress = false;
-                stationInteractScriptHandler.tutorial = false;
-                stationInteractScriptHandler.tutorial2 = true;
+                if (prompt == 0)
+                {
+                    welcome_prompt.SetActive(false);
+                    Debug.Log("prompt = " + prompt);
 
-                // populate the 3 pages of the question dialog
-                // start at page 1
-                stationInteractScriptHandler.currentPage = 1;
-                stationInteractScriptHandler.currentSelection = 1;
-                stationInteractScriptHandler.option_textHandler[0].rectTransform.localScale = new Vector3(.55f, .55f, .55f);
-                stationInteractScriptHandler.PopulateDialog();
-                stationInteractScriptHandler.interact = true;
-                stationInteractScriptHandler.DialogBox.SetActive(true);
-                Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 1)
+                {
+                    objective1_prompt.SetActive(false);
+                    objective1Trigger.SetActive(false);
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 2)
+                {
+                    battledroid_prompt1.SetActive(false);
+                    battledroid_prompt2.SetActive(true);
+                    prompt = 3;
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 3)
+                {
+                    battledroid_prompt2.SetActive(false);
+                    //
+                    // stop slowmotion
+                    //
+                    prompt = 4;
+                    battledroid1Handler.returnToPosition = true;
+                    battledroid1Handler.enabled = true;
+                    BattledroidInfo(false);
+                    stationScriptHandler.locked = false;
+                    stationInteractScriptHandler.locked = false;
+                    stationInteractScriptHandler.tutorial = true;
+                    objective1_prompt.SetActive(true);
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 4)
+                {
+                    objective1_prompt.SetActive(false);
+                    prompt = 5;
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 6)
+                {
+                    stationTutorialPrompt1.SetActive(false);
+                    stationTutorialPrompt2.SetActive(true);
+                    prompt = 7;
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 7)
+                {
+                    stationTutorialPrompt2.SetActive(false);
+                    stationTutorialPrompt3.SetActive(true);
+                    prompt = 8;
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 8)
+                {
+                    stationTutorialPrompt3.SetActive(false);
+                    stationInteractScriptHandler.tutorialInProgress = false;
+                    stationInteractScriptHandler.tutorial = false;
+                    stationInteractScriptHandler.tutorial2 = true;
+
+                    // populate the 3 pages of the question dialog
+                    // start at page 1
+                    stationInteractScriptHandler.currentPage = 1;
+                    stationInteractScriptHandler.currentSelection = 1;
+                    stationInteractScriptHandler.option_textHandler[0].rectTransform.localScale = new Vector3(.55f, .55f, .55f);
+                    stationInteractScriptHandler.PopulateDialog();
+                    stationInteractScriptHandler.interact = true;
+                    stationInteractScriptHandler.DialogBox.SetActive(true);
+                    Debug.Log("prompt = " + prompt);
+                }
+                else if (prompt == 9)
+                {
+                    stationFinishedDialog1.SetActive(false);
+                    stationFinishedDialog2.SetActive(true);
+                    prompt = 10;
+                    Debug.Log("prompt = " + prompt);
+
+
+                }
+                else if (prompt == 10)
+                {
+
+                    stationFinishedDialog2.SetActive(false);
+                    station2ScriptHandler.locked = false;
+                    station2InteractScriptHandler.locked = false;
+                    station3ScriptHandler.locked = false;
+                    station3InteractScriptHandler.locked = false;
+                    objective1.SetActive(false);
+                    objective2.SetActive(true);
+                    objective3.SetActive(true);
+                    station3InteractScriptHandler.anim.SetBool("isKneeling", false);
+                    station3InteractScriptHandler.tutorial2 = false;
+                    prompt = 11;
+                    Debug.Log("prompt = " + prompt);
+
+
+                }
             }
-            else if(prompt == 9)
-            {
-                stationFinishedDialog1.SetActive(false);
-                stationFinishedDialog2.SetActive(true);
-                prompt = 10;
-                Debug.Log("prompt = " + prompt);
+        }
+        
+    }
 
-
-            }
-            else if(prompt == 10)
-            {
-
-                stationFinishedDialog2.SetActive(false);
-                station2ScriptHandler.locked = false;
-                station2InteractScriptHandler.locked = false;
-                station3ScriptHandler.locked = false;
-                station3InteractScriptHandler.locked = false;
-                objective1.SetActive(false);
-                objective2.SetActive(true);
-                objective3.SetActive(true);
-                station3InteractScriptHandler.anim.SetBool("isKneeling", false);
-                station3InteractScriptHandler.tutorial2 = false;
-                prompt = 11;
-                Debug.Log("prompt = " + prompt);
-
-
-            }
+    public void EnableBattledroids()
+    {
+        //
+        // enable all the battledroids in the list
+        //
+        foreach (GameObject battledroid in battledroids)
+        {
+            battledroidHandlerTemp = battledroid.GetComponent<BattledroidHandler>();
+            battledroidHandlerTemp.enabled = true;
+            battledroidHandlerTemp.returnToPosition = true;
 
         }
     }

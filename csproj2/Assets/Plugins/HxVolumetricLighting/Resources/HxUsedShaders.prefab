@@ -20,7 +20,7 @@ MonoBehaviour:
   HeightFog: 1
   HeightFogOff: 1
   Noise: 1
-  NoiseOff: 0
+  NoiseOff: 1
   Transparency: 0
   TransparencyOff: 1
   DensityParticles: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   HeightFogLast: 1
   HeightFogOffLast: 1
   NoiseLast: 1
-  NoiseOffLast: 0
+  NoiseOffLast: 1
   TransparencyLast: 0
   TransparencyOffLast: 1
   DensityParticlesLast: 0

@@ -151,7 +151,7 @@ public class BtnHandlerScript : MonoBehaviour {
 
     public void OnNormalStarClick()
     {
-
+        loginManagerHandler.NormalStar();
 
     }
 

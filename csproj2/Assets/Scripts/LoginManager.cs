@@ -150,6 +150,40 @@ public class LoginManager : MonoBehaviour
 
     }
 
+    public void NormalStar()
+    {
+        //
+        // check if deck has enough cards for the level
+        //
+
+        session.tutorial = false;
+        int menuIndex = dropdownHandler.value;
+        List<Dropdown.OptionData> menuOptions = dropdownHandler.options;
+        string selectedDeckTemp = menuOptions[menuIndex].text;
+
+        foreach (DeckInfo deck in session.decks)
+        {
+            if (selectedDeckTemp == deck.name)
+            {
+                Debug.Log("found selected deck from dropdown and placed it into scriptable object");
+                session.selectedDeck = deck;
+                break;
+            }
+        }
+
+        if (session.selectedDeck == null)
+        {
+            Debug.Log("could not find selected deck");
+            return;
+        }
+
+        //
+        // screen wipe transition and load level;
+        //
+        levelchanger.FadeToLevel(5);
+
+    }
+
     public void TutorialStar()
     {
         //
@@ -157,7 +191,7 @@ public class LoginManager : MonoBehaviour
         //
 
 
-
+        session.tutorial = true;
         int menuIndex = dropdownHandler.value;
         List<Dropdown.OptionData> menuOptions = dropdownHandler.options;
         string selectedDeckTemp = menuOptions[menuIndex].text;

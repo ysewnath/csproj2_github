@@ -35,6 +35,8 @@ public class SessionManager : ScriptableObject
     [SerializeField]
     public bool invertYaxis = false;
 
+    [SerializeField]
+    public bool tutorial = false;
 
     // TODO: Redownload if hash doesn't match!
     public IEnumerator DownloadDecks()
