@@ -85,6 +85,8 @@ public class TriggerHandler : MonoBehaviour
     BattledroidHandler battledroidHandlerTemp;
     bool enableBattledroids = false;
 
+    
+
     private void Start()
     {
         
@@ -125,6 +127,11 @@ public class TriggerHandler : MonoBehaviour
             battledroidTimelineHandler.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
             //enabled = false;
             tutorial2 = true;
+        }
+        else
+        {
+            detectedScript_handler.numStations = 7;
+
         }
 
 

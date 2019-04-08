@@ -180,7 +180,7 @@ public class LoginManager : MonoBehaviour
         //
         // screen wipe transition and load level;
         //
-        levelchanger.FadeToLevel(5);
+        levelchanger.FadeToLevel(6);
 
     }
 
