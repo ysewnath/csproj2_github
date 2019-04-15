@@ -1263,6 +1263,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelChanger: {fileID: 1455647198}
   session: {fileID: 11400000, guid: ba98cc8430a4be64ca0721c88dcc0205, type: 2}
+  word_text: {fileID: 651187722}
+  translation_text: {fileID: 1639067122}
+  wordsMissed_text: {fileID: 472972680}
+  Stations_completed_text: {fileID: 1129863157}
 --- !u!1 &1178087696
 GameObject:
   m_ObjectHideFlags: 0

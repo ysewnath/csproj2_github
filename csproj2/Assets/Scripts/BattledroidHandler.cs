@@ -21,7 +21,7 @@ public class BattledroidHandler : MonoBehaviour
     Vector3 lastKnownPosition;
     Vector3 Battledrid_originalPosition;
     bool isSearching = false;
-    bool isPatroling = false;
+    public bool isPatroling = false;
     public bool returnToPosition = false;
     bool returnToPositionFlag = false;
 
@@ -37,6 +37,12 @@ public class BattledroidHandler : MonoBehaviour
 
     public GameObject detectedSound;
     AudioSource detectedSoundHandler;
+
+    bool togglePlayerDetect = true;
+
+    public List<GameObject> Waypoints;
+
+    int index = 0;
 
     // Use this for initialization
     void Start()
@@ -55,33 +61,42 @@ public class BattledroidHandler : MonoBehaviour
 
     public void PlayerDetect(bool option)
     {
-        if (option)
+        if(togglePlayerDetect)
         {
-            //Debug.Log("indicator1 on");
-            indicator1.SetActive(true);
-            indicator1Handler = true;
-            detectedPlayerHandler.detected = true;
-            isSearching = true;
+            if (option)
+            {
+                //Debug.Log("indicator1 on");
+                indicator1.SetActive(true);
+                indicator1Handler = true;
+                detectedPlayerHandler.detected = true;
+                isSearching = true;
 
-            //direction = player.position - this.transform.position;
-            lastKnownPosition = player.position;
+                //direction = player.position - this.transform.position;
+                lastKnownPosition = player.position;
 
-            detectedSoundHandler.Play();
+                detectedSoundHandler.Play();
+            }
+            else
+            {
+                //Debug.Log("indicator1 off");
+                indicator1.SetActive(false);
+                indicator1Handler = false;
+                detectedPlayerHandler.detected = false;
+            }
         }
-        else
-        {
-            //Debug.Log("indicator1 off");
-            indicator1.SetActive(false);
-            indicator1Handler = false;
-            detectedPlayerHandler.detected = false;
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!detectedPlayerHandler.isInteracting)
+        {
+            togglePlayerDetect = true;
+        }
         if (detectedPlayerHandler.isInteracting)
         {
+            togglePlayerDetect = false;
             detectedPlayerHandler.searchDetected = false;
             ReturnToOriginalPosition();
         }
@@ -97,7 +112,8 @@ public class BattledroidHandler : MonoBehaviour
         }
         else if (isPatroling)
         {
-
+            detectedPlayerHandler.searchDetected = false;
+            Patrol();
         }
 
 
@@ -195,7 +211,28 @@ public class BattledroidHandler : MonoBehaviour
 
     public void Patrol()
     {
+        mNavMeshAgent.destination = Waypoints[index].transform.position;
 
+        if (Vector3.Distance(Waypoints[index].transform.position, this.transform.position) < .5f)
+        {
+            anim.SetTrigger("isSearching");
+            seeking = false;
+            //
+            // move to next patrol point
+            //
+            index++;
+            if (index == Waypoints.Count)
+            {
+                index = 0;
+            }
+            
+        }
+        else
+        {
+            seeking = true;
+        }
+
+        anim.SetBool("followPlayer", seeking);
 
     }
 }

@@ -45,11 +45,17 @@ public class DetectedHandler : MonoBehaviour
 
     float whispersVolume = 0;
 
+    public List<GameObject> Objectives;
+    public GameObject GateCollider;
+
+    public List<QuestionModel> IncorrectQuestions = new List<QuestionModel>();
+
     private void Start()
     {
         redFlareHandler = redFlare.GetComponent<ParticleSystem>();
         SlowmotionHandler = TimeHandler.GetComponent<TimeHandler>();
         whisperAudioHandler = whispersAudio.GetComponent<AudioSource>();
+
     }
 
     private void Update()
@@ -59,6 +65,7 @@ public class DetectedHandler : MonoBehaviour
             //
             // start slowmotion
             //
+            PushIncorrectQuestions();
             session.gameover_detected = true;
             startSlowmotion = true;
             SlowmotionHandler.SlowmotionHandler(true);
@@ -132,6 +139,50 @@ public class DetectedHandler : MonoBehaviour
     {
         gameover = true;
 
+    }
+
+    public void PushIncorrectQuestions()
+    {
+        session.IncorrectQuestions = IncorrectQuestions;
+        session.numStations = numStations;
+        session.numCorrect = numCorrect;
+    }
+
+    public void DisableGateCollider()
+    {
+        if(!session.tutorial)
+        {
+
+            GateCollider.SetActive(false);
+
+        }
+    }
+
+    public void ShowStations()
+    {
+        if(!session.tutorial)
+        {
+            foreach (GameObject objective in Objectives)
+            {
+                if (objective.tag != "Finished")
+                {
+                    objective.SetActive(true);
+                }
+
+            }
+        }      
+    }
+
+    public void HideStations()
+    {
+        if (!session.tutorial)
+        {
+            foreach (GameObject objective in Objectives)
+            {
+                objective.SetActive(false);
+
+            }
+        }      
     }
 
     public void ShowRequirement(bool option)

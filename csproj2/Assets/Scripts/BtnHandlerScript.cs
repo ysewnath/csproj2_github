@@ -130,6 +130,9 @@ public class BtnHandlerScript : MonoBehaviour {
         loginManagerHandler.startBtnHandler.interactable = true;
         loginManagerHandler.optionsBtnHandler.interactable = true;
         loginManagerHandler.exitBtnHandler.interactable = true;
+        loginManagerHandler.TutorialStar_invalidDeckDialog.SetActive(false);
+        loginManagerHandler.NormalStar_invalidDeckDialog.SetActive(false);
+        loginManagerHandler.invalidDeckDialog.SetActive(false);
     }
 
     public void OnCloseBtnClick_login()

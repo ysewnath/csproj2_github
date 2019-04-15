@@ -38,6 +38,15 @@ public class SessionManager : ScriptableObject
     [SerializeField]
     public bool tutorial = false;
 
+    [SerializeField]
+    public List<QuestionModel> IncorrectQuestions;
+
+    [SerializeField]
+    public int numStations;
+
+    [SerializeField]
+    public int numCorrect;
+
     // TODO: Redownload if hash doesn't match!
     public IEnumerator DownloadDecks()
     {

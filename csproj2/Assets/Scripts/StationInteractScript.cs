@@ -93,6 +93,8 @@ public class StationInteractScript : MonoBehaviour
     public GameObject levelChanger;
     LevelChanger levelChangerHandler;
 
+    public GameObject ObjectiveStationHandler;
+
     // Use this for initialization
     void Start()
     {
@@ -291,7 +293,7 @@ public class StationInteractScript : MonoBehaviour
         decode_numCorrect.SetActive(false);
         DialogBox.SetActive(false);
         interact = false;
-        detectedPlayerHandler.isInteracting = false;
+        //detectedPlayerHandler.isInteracting = false;
         RefreshOptions();
     }
 
@@ -303,6 +305,13 @@ public class StationInteractScript : MonoBehaviour
             if ((item.CurrentSelection - 1) == item.CorrectOption)
             {
                 numCorrect++;
+            }
+            else
+            {
+                //
+                // log incorrect question
+                //
+                detectedPlayerHandler.IncorrectQuestions.Add(item);
             }
         }
     }
@@ -364,11 +373,18 @@ public class StationInteractScript : MonoBehaviour
                 //
                 detectedPlayerHandler.findStations_collider.SetActive(false);
                 detectedPlayerHandler.winCondition = true;
+                detectedPlayerHandler.DisableGateCollider();
                 objective_gate2.SetActive(true);
 
             }
         }
 
+        // disable objective indicator if not tutorial
+        if(detectedPlayerHandler.numStations > 3)
+        {
+            ObjectiveStationHandler.tag = "Finished";
+            //ObjectiveStationHandler.SetActive(false);
+        }
         
         enabled = false;
         yield return new WaitForSeconds(3f);

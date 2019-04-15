@@ -40,6 +40,9 @@ public class MovementInput : MonoBehaviour {
     public bool crouching = false;
     public CinemachineVirtualCameraBase vcam_crouch;
 
+    public GameObject detectedScript;
+    DetectedHandler detectedHandlerScript;
+
     // Use this for initialization
     void Start () {
 		anim = this.GetComponent<Animator> ();
@@ -47,6 +50,8 @@ public class MovementInput : MonoBehaviour {
 		controller = this.GetComponent<CharacterController> ();
         Cursor.visible = false;
         moveLock = true;
+
+        detectedHandlerScript = detectedScript.GetComponent<DetectedHandler>();
     }
 	
 	// Update is called once per frame
@@ -73,6 +78,12 @@ public class MovementInput : MonoBehaviour {
 		//Updater
 	}
 
+    public void DisableInteract()
+    {
+        Debug.Log("disabled isInteracting through animation event");
+        detectedHandlerScript.isInteracting = false;
+    }
+
     public void CrouchCheck()
     {
         if (Input.GetKeyDown(KeyCode.LeftControl) && !crouching)
@@ -80,12 +91,14 @@ public class MovementInput : MonoBehaviour {
             anim.SetBool("isCrouching", true);
             crouching = true;
             vcam_crouch.Priority = 20;
+            detectedHandlerScript.ShowStations();
         }
         else if (crouching && Input.GetKeyUp(KeyCode.LeftControl))
         {
             anim.SetBool("isCrouching", false);
             crouching = false;
             vcam_crouch.Priority = 10;
+            detectedHandlerScript.HideStations();
         }
     }
 

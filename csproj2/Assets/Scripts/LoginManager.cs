@@ -81,9 +81,15 @@ public class LoginManager : MonoBehaviour
 
     public LevelChanger levelchanger;
 
+    public GameObject NormalStar_invalidDeckDialog;
+    public GameObject TutorialStar_invalidDeckDialog;
+    public GameObject invalidDeckDialog;
+
 
     [SerializeField]
     private SessionManager session;
+
+    private LanguagePackInterface languagePackInterface;
 
     private static string baseURL = "https://endlesslearner.com/";
     private static string createAccountURL = baseURL + "register";
@@ -152,9 +158,7 @@ public class LoginManager : MonoBehaviour
 
     public void NormalStar()
     {
-        //
-        // check if deck has enough cards for the level
-        //
+        TutorialStar_invalidDeckDialog.SetActive(false);
 
         session.tutorial = false;
         int menuIndex = dropdownHandler.value;
@@ -178,18 +182,27 @@ public class LoginManager : MonoBehaviour
         }
 
         //
+        // check if deck has enough cards for the level
+        //
+        languagePackInterface = new LanguagePackInterface(session.selectedDeck);
+        if (languagePackInterface.Cards.Count < 21)
+        {
+
+            // display invalid number of cards dialog, deck needs at least %d cards
+            invalidDeckDialog.SetActive(true);
+            NormalStar_invalidDeckDialog.SetActive(true);
+            return;
+        }
+
+        //
         // screen wipe transition and load level;
         //
         levelchanger.FadeToLevel(6);
-
     }
 
     public void TutorialStar()
     {
-        //
-        // check if deck has enough cards for the level
-        //
-
+        NormalStar_invalidDeckDialog.SetActive(false);
 
         session.tutorial = true;
         int menuIndex = dropdownHandler.value;
@@ -213,10 +226,22 @@ public class LoginManager : MonoBehaviour
         }
 
         //
+        // check if deck has enough cards for the level
+        //
+        languagePackInterface = new LanguagePackInterface(session.selectedDeck);
+        if (languagePackInterface.Cards.Count < 9)
+        {
+
+            // display invalid number of cards dialog
+            invalidDeckDialog.SetActive(true);
+            TutorialStar_invalidDeckDialog.SetActive(true);
+            return;
+        }
+
+        //
         // screen wipe transition and load level;
         //
         levelchanger.FadeToLevel(2);
-
     }
 
     public void OnRegisterClick()

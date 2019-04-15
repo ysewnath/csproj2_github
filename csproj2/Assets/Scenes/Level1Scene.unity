@@ -1577,6 +1577,7 @@ MonoBehaviour:
   numStationsDialog: {fileID: 1864537975}
   objective_gate2: {fileID: 1249953128}
   levelChanger: {fileID: 1045987458}
+  ObjectiveStationHandler: {fileID: 0}
 --- !u!135 &90127922
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2937,7 +2938,7 @@ MonoBehaviour:
   FogTransitionSize: 5.04
   MaxLightDistance: 12.37
   AboveFogPercent: 0.35
-  Offset: {x: 17193.146, y: 17193.146, z: 0}
+  Offset: {x: 17200.379, y: 17200.379, z: 0}
 --- !u!1001 &173621395
 Prefab:
   m_ObjectHideFlags: 0
@@ -11383,7 +11384,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 348300992}
-  m_LocalRotation: {x: 0.10407514, y: 0.05556907, z: -0.0058241445, w: 0.9929988}
+  m_LocalRotation: {x: 0.1040758, y: 0.055453364, z: -0.0058120163, w: 0.9930053}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14702,7 +14703,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.08595154, y: 0.06415915, z: -0.005546659, w: 0.9942159}
+  m_LocalRotation: {x: 0.085952275, y: 0.064025946, z: -0.005535144, w: 0.9942244}
   m_LocalPosition: {x: -3.87, y: 5.5, z: -7.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14872,22 +14873,22 @@ MonoBehaviour:
   MapToLDR: 0
   RemoveColorBanding: 1
   MatrixVP:
-    e00: 1.5310636
-    e01: 0.00000000143784
-    e02: -0.1984328
-    e03: 4.504437
-    e10: -0.0606047
+    e00: 1.5348463
+    e01: 0.0000000014413424
+    e02: -0.1985049
+    e03: 4.51856
+    e10: -0.060479403
     e11: -2.7067134
-    e12: -0.46761248
-    e13: 11.304278
-    e20: -0.000002535891
-    e21: 0.0000034370714
-    e22: -0.000019566374
-    e23: 0.09983319
-    e30: 0.1266226
-    e31: -0.1716205
-    e32: 0.9769919
-    e33: 8.429204
+    e12: -0.46762863
+    e13: 11.304647
+    e20: -0.000002530648
+    e21: 0.000003437071
+    e22: -0.000019567051
+    e23: 0.099833205
+    e30: 0.1263608
+    e31: -0.17162049
+    e32: 0.97702575
+    e33: 8.428433
   LastMatrixVP:
     e00: 1.5433306
     e01: -0.0000000044925277
@@ -14957,18 +14958,18 @@ MonoBehaviour:
     e32: 0
     e33: 0
   MatrixV:
-    e00: 0.99170566
+    e00: 0.9917401
     e01: 9.313226e-10
-    e02: -0.12852956
-    e03: 2.9176292
-    e10: 0.022058308
+    e02: -0.12826383
+    e03: 2.919665
+    e10: 0.022012703
     e11: 0.98516315
-    e12: 0.17019702
-    e13: -4.114421
-    e20: -0.1266226
-    e21: 0.1716205
-    e22: -0.9769919
-    e23: -8.429204
+    e12: 0.17020291
+    e13: -4.1145554
+    e20: -0.1263608
+    e21: 0.17162049
+    e22: -0.97702575
+    e23: -8.428433
     e30: 0
     e31: 0
     e32: 0
@@ -15959,7 +15960,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 580952395}
-  m_LocalRotation: {x: 0.08841348, y: 0.05565395, z: -0.004947684, w: 0.9945156}
+  m_LocalRotation: {x: 0.08841405, y: 0.05553805, z: -0.0049373796, w: 0.9945221}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -16855,6 +16856,7 @@ MonoBehaviour:
   numStationsDialog: {fileID: 1864537975}
   objective_gate2: {fileID: 1249953128}
   levelChanger: {fileID: 1045987458}
+  ObjectiveStationHandler: {fileID: 0}
 --- !u!135 &631829153
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -23125,6 +23127,7 @@ MonoBehaviour:
   StopAnimTime: 0.15
   crouching: 0
   vcam_crouch: {fileID: 518218229}
+  detectedScript: {fileID: 870143042}
 --- !u!114 &730881915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30630,6 +30633,7 @@ MonoBehaviour:
   TimeHandler: {fileID: 890827037}
   session: {fileID: 11400000, guid: ba98cc8430a4be64ca0721c88dcc0205, type: 2}
   whispersAudio: {fileID: 877843771}
+  Objectives: []
 --- !u!4 &870143044
 Transform:
   m_ObjectHideFlags: 0
@@ -32150,7 +32154,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 952752351}
-  m_LocalRotation: {x: 6.405544e-17, y: -0.03676543, z: 2.3566187e-18, w: 0.99932396}
+  m_LocalRotation: {x: -6.405543e-17, y: -0.03676543, z: -2.3566187e-18, w: 0.99932396}
   m_LocalPosition: {x: -3.0694904, y: 4.52, z: -6.3199997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -39080,7 +39084,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099224329}
-  m_LocalRotation: {x: 0.08595154, y: 0.064159125, z: -0.0055466495, w: 0.9942159}
+  m_LocalRotation: {x: 0.085952275, y: 0.06402594, z: -0.005535135, w: 0.9942245}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -42477,7 +42481,6 @@ MonoBehaviour:
   session: {fileID: 11400000, guid: ba98cc8430a4be64ca0721c88dcc0205, type: 2}
   battledroids:
   - {fileID: 1545639740}
-  vcam12: {fileID: 0}
 --- !u!4 &1302155065
 Transform:
   m_ObjectHideFlags: 0
@@ -48629,7 +48632,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1355292718}
-  m_LocalRotation: {x: 0.07276096, y: 0.05572489, z: -0.0040717954, w: 0.99578315}
+  m_LocalRotation: {x: 0.07276144, y: 0.05560885, z: -0.004063314, w: 0.99578965}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -48947,7 +48950,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1381234507}
-  m_LocalRotation: {x: 0.104021594, y: 0.06404763, z: -0.006712756, w: 0.99248797}
+  m_LocalRotation: {x: 0.10402249, y: 0.06391467, z: -0.0066988207, w: 0.99249655}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -50362,7 +50365,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1447693163}
-  m_LocalRotation: {x: 0.067900866, y: 0.06424919, z: -0.004381798, w: 0.99561155}
+  m_LocalRotation: {x: 0.067901455, y: 0.064115815, z: -0.004372702, w: 0.99562013}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -51009,7 +51012,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 1990.271, y: 1990.271, z: 0}
+  Offset: {x: 1997.5294, y: 1997.5294, z: 0}
 --- !u!1001 &1487481699
 Prefab:
   m_ObjectHideFlags: 0
@@ -64343,6 +64346,7 @@ MonoBehaviour:
   numStationsDialog: {fileID: 1864537975}
   objective_gate2: {fileID: 1249953128}
   levelChanger: {fileID: 1045987458}
+  ObjectiveStationHandler: {fileID: 0}
 --- !u!135 &1957548005
 SphereCollider:
   m_ObjectHideFlags: 0

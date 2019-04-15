@@ -282,7 +282,8 @@ public class TriggerHandler : MonoBehaviour
         {
             battledroidHandlerTemp = battledroid.GetComponent<BattledroidHandler>();
             battledroidHandlerTemp.enabled = true;
-            battledroidHandlerTemp.returnToPosition = true;
+            //battledroidHandlerTemp.returnToPosition = true;
+            battledroidHandlerTemp.isPatroling = true;
 
         }
     }
@@ -325,10 +326,16 @@ public class TriggerHandler : MonoBehaviour
 
     public IEnumerator FadeToStageCompleteScreen()
     {
-
+        detectedScript_handler.PushIncorrectQuestions();
         yield return new WaitForSeconds(20f);
         levelChangerHandler.FadeToLevel(4);
         
+    }
+
+    public void FadeToStageCompleteNormal()
+    {
+        detectedScript_handler.PushIncorrectQuestions();
+        levelChangerHandler.FadeToLevel(4);
     }
 
     public void Objective1_end()
