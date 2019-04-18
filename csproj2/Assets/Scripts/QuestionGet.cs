@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System;
 
 public class QuestionGet : MonoBehaviour
 {
@@ -58,7 +59,16 @@ public class QuestionGet : MonoBehaviour
             thirdPersonCrouchCamHandler.m_YAxis.m_InvertInput = false;
         }
 
-        languagePackInterface = new LanguagePackInterface(session.selectedDeck);
+        if(session.offlineMode)
+        {
+            Debug.Log("offline mode");         
+            DeckInfo offlineDeck = new DeckInfo(Convert.ToInt32(session.offlineDeck), "");
+            languagePackInterface = new LanguagePackInterface(offlineDeck);
+        }
+        else
+        {
+            languagePackInterface = new LanguagePackInterface(session.selectedDeck);
+        } 
         if (languagePackInterface.Cards.Count > 5)
         {
             Debug.Log("successfully retrieved the cards from the csv file");

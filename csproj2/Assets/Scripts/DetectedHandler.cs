@@ -49,6 +49,7 @@ public class DetectedHandler : MonoBehaviour
     public GameObject GateCollider;
 
     public List<QuestionModel> IncorrectQuestions = new List<QuestionModel>();
+    public List<QuestionModel> CorrectQuestions = new List<QuestionModel>();
 
     private void Start()
     {
@@ -146,6 +147,14 @@ public class DetectedHandler : MonoBehaviour
         session.IncorrectQuestions = IncorrectQuestions;
         session.numStations = numStations;
         session.numCorrect = numCorrect;
+        session.CorrectQuestions = CorrectQuestions;
+
+        //
+        // calculate score
+        //
+        int total = numCorrect * 100;
+        total = total - (IncorrectQuestions.Count * 10);
+        session.score = total;
     }
 
     public void DisableGateCollider()

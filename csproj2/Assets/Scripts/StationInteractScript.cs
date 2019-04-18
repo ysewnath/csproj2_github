@@ -305,6 +305,7 @@ public class StationInteractScript : MonoBehaviour
             if ((item.CurrentSelection - 1) == item.CorrectOption)
             {
                 numCorrect++;
+                detectedPlayerHandler.CorrectQuestions.Add(item);
             }
             else
             {

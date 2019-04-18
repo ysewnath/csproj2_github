@@ -42,10 +42,27 @@ public class SessionManager : ScriptableObject
     public List<QuestionModel> IncorrectQuestions;
 
     [SerializeField]
+    public List<QuestionModel> CorrectQuestions;
+
+    [SerializeField]
     public int numStations;
 
     [SerializeField]
     public int numCorrect;
+
+    [SerializeField]
+    public string username;
+
+    [SerializeField]
+    public bool offlineMode = false;
+
+    [SerializeField]
+    public string offlineDeck = "";
+
+    [SerializeField]
+    public int score;
+
+
 
     // TODO: Redownload if hash doesn't match!
     public IEnumerator DownloadDecks()

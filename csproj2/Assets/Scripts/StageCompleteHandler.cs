@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.IO;
+using System;
+using UnityEngine.Networking;
 
 public class StageCompleteHandler : MonoBehaviour
 {
@@ -35,6 +38,15 @@ public class StageCompleteHandler : MonoBehaviour
         levelChangerHandler = levelChanger.GetComponent<LevelChanger>();
         Time.timeScale = 1;
 
+        if (session.offlineMode)
+        {
+            OutputLogFile();
+        }
+        else
+        {
+            StartCoroutine(OutputStatsToDatabase());
+        }
+
         IncorrectQuestions = session.IncorrectQuestions;
         session.IncorrectQuestions = null;
 
@@ -58,6 +70,47 @@ public class StageCompleteHandler : MonoBehaviour
             translation_textHandler.text = ValidateCorrectAnswer();
         }
 
+    }
+
+    IEnumerator OutputStatsToDatabase()
+    {
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>()
+        {
+            new MultipartFormFileSection("userID",session.id.ToString()),
+            new MultipartFormFileSection("deck_ID",session.selectedDeck.id.ToString()),
+            new MultipartFormFileSection("correct",session.CorrectQuestions.Count.ToString()),
+            new MultipartFormFileSection("incorrect",session.IncorrectQuestions.Count.ToString()),
+            new MultipartFormFileSection("score",session.score.ToString())
+        };
+
+        string statsURL = "endlesslearner.com/insertstats";
+        UnityWebRequest www = UnityWebRequest.Post(statsURL, formData);
+        yield return www.SendWebRequest();
+    }
+
+    public void OutputLogFile()
+    {
+        UserModel offlineUser = new UserModel();
+        offlineUser.DeckID = session.offlineDeck;
+        offlineUser.Score = session.score;
+        offlineUser.User = session.username;
+        offlineUser.StationsCorrect = session.numCorrect;
+        offlineUser.QuestionsCorrect = session.CorrectQuestions.Count;
+        offlineUser.QuestionsWrong = session.IncorrectQuestions.Count;
+
+
+
+        using (StreamWriter logFile = new StreamWriter(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\ProjectElle\\LogFile.txt", true))
+        {
+            logFile.WriteLine("----------------------------");
+            logFile.WriteLine("session: " + DateTime.Now);
+            logFile.WriteLine("user: " + offlineUser.User);
+            logFile.WriteLine("score: " + offlineUser.Score);
+            logFile.WriteLine("stations correct: " + offlineUser.StationsCorrect);
+            logFile.WriteLine("questions correct: " + offlineUser.QuestionsCorrect);
+            logFile.WriteLine("questions wrong: " + offlineUser.QuestionsWrong);
+            logFile.WriteLine("----------------------------");
+        }
     }
 
     // Update is called once per frame

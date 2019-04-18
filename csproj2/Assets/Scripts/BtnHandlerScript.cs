@@ -22,10 +22,23 @@ public class BtnHandlerScript : MonoBehaviour {
 
     bool isLoggedin = false;
 
+    public GameObject offlineDialog;
+    public GameObject offlineUserInput;
+    TMP_InputField offlineUserInputHander;
+    public GameObject deckNumberInput;
+    TMP_InputField deckNumberInputHandler;
+
+    public GameObject deckNumberInputDialog;
+    public LevelChanger levelchanger;
+    public GameObject InvalidDeckNumberDialog;
+
+
     private void Start()
     {
         loginManagerHandler = loginManger.GetComponent<LoginManager>();
         invertYAxis_textHandler = invertYAxis_text.GetComponent<TextMeshProUGUI>();
+        offlineUserInputHander = offlineUserInput.GetComponent<TMP_InputField>();
+        deckNumberInputHandler = deckNumberInput.GetComponent<TMP_InputField>();
     }
 
     public void StartBtn_click()
@@ -39,14 +52,25 @@ public class BtnHandlerScript : MonoBehaviour {
             loginManagerHandler.passInputHandler.interactable = true;
             loginManagerHandler.enterBtnHandler.interactable = true;
             loginManagerHandler.closeBtnHandler.interactable = true;
-
-
         }
         else
         {
             // display path screen
             loginManagerHandler.StartScreenPromt.SetActive(true);
-            loginManagerHandler.DeckSelection.SetActive(true);
+
+            if(!session.offlineMode)
+            {
+                loginManagerHandler.DeckSelection.SetActive(true);
+            }
+            else
+            {
+                //
+                // display offline deck number entry dialog
+                //
+                deckNumberInputDialog.SetActive(true);
+
+            }
+            
         }
 
         loginManagerHandler.startBtnHandler.interactable = false;
@@ -133,6 +157,8 @@ public class BtnHandlerScript : MonoBehaviour {
         loginManagerHandler.TutorialStar_invalidDeckDialog.SetActive(false);
         loginManagerHandler.NormalStar_invalidDeckDialog.SetActive(false);
         loginManagerHandler.invalidDeckDialog.SetActive(false);
+        deckNumberInputDialog.SetActive(false);
+        InvalidDeckNumberDialog.SetActive(false);
     }
 
     public void OnCloseBtnClick_login()
@@ -148,14 +174,44 @@ public class BtnHandlerScript : MonoBehaviour {
 
     public void OnTutorialStarClick()
     {
-        loginManagerHandler.TutorialStar();
+        if(!session.offlineMode)
+        {
+            loginManagerHandler.TutorialStar();
+        }
+        else
+        {
+            if(deckNumberInputHandler.text == "")
+            {
+                InvalidDeckNumberDialog.SetActive(true);
+                return;
+            }
 
+            session.tutorial = true;
+            session.offlineDeck = deckNumberInputHandler.text;
+            Debug.Log("offline deck ID: " + session.offlineDeck);
+            levelchanger.FadeToLevel(2);
+        }      
     }
 
     public void OnNormalStarClick()
     {
-        loginManagerHandler.NormalStar();
+        if(!session.offlineMode)
+        {
+            loginManagerHandler.NormalStar();
+        }
+        else
+        {
+            if (deckNumberInputHandler.text == "")
+            {
+                InvalidDeckNumberDialog.SetActive(true);
+                return;
+            }
 
+            session.tutorial = false;
+            session.offlineDeck = deckNumberInputHandler.text;
+            Debug.Log("offline deck ID: " + session.offlineDeck);
+            levelchanger.FadeToLevel(6);
+        }     
     }
 
     public void OnHardStarClick()
@@ -190,5 +246,33 @@ public class BtnHandlerScript : MonoBehaviour {
     {
         loginManagerHandler.OnLoginClick();
 
+    }
+
+    public void OfflineModeBtnClick_login()
+    {
+        loginManagerHandler.LoginPrompt.SetActive(false);
+        offlineDialog.SetActive(true);
+
+    }
+
+    public void OfflineModeBtnClick_Enter()
+    {
+        session.username = offlineUserInputHander.text;
+        Debug.Log("username: " + session.username);
+        loginManagerHandler.BypassedLogin = true;
+        loginManagerHandler.loggedIn = true;
+        session.offlineMode = true;
+        offlineDialog.SetActive(false);
+        loginManagerHandler.startBtnHandler.interactable = true;
+        loginManagerHandler.optionsBtnHandler.interactable = true;
+        loginManagerHandler.exitBtnHandler.interactable = true;
+    }
+
+    public void OffilineDialogExit_btnClick()
+    {
+        offlineDialog.SetActive(false);
+        loginManagerHandler.startBtnHandler.interactable = true;
+        loginManagerHandler.optionsBtnHandler.interactable = true;
+        loginManagerHandler.exitBtnHandler.interactable = true;
     }
 }
