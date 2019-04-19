@@ -42,7 +42,7 @@ public class EndGameHandler : MonoBehaviour
         reasonTextHandler = reasonText.GetComponent<TextMeshProUGUI>();
         Time.timeScale = 1;
 
-        if(session.offlineMode)
+        if (session.offlineMode)
         {
             OutputLogFile();
         }
@@ -51,7 +51,7 @@ public class EndGameHandler : MonoBehaviour
             StartCoroutine(OutputStatsToDatabase());
         }
 
-        if(session.gameover_detected)
+        if (session.gameover_detected)
         {
             reasonTextHandler.text = "DETECTED BY DROIDS";
             session.gameover_detected = false;
@@ -112,30 +112,35 @@ public class EndGameHandler : MonoBehaviour
         offlineUser.StationsCorrect = session.numCorrect;
         offlineUser.QuestionsCorrect = session.CorrectQuestions.Count;
         offlineUser.QuestionsWrong = session.IncorrectQuestions.Count;
+        bool appendToFile = false;
 
-
-
-        using (StreamWriter logFile = new StreamWriter(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\ProjectElle\\LogFile.txt",true))
+        if (File.Exists(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\ProjectElle\\LogFile.csv"))
         {
-            logFile.WriteLine("----------------------------");
-            logFile.WriteLine("session: " + DateTime.Now);
-            logFile.WriteLine("user: " + offlineUser.User);
-            logFile.WriteLine("score: " + offlineUser.Score);
-            logFile.WriteLine("stations correct: " + offlineUser.StationsCorrect);
-            logFile.WriteLine("questions correct: " + offlineUser.QuestionsCorrect);
-            logFile.WriteLine("questions wrong: " + offlineUser.QuestionsWrong);
-            logFile.WriteLine("----------------------------");
+            appendToFile = true;
+            using (StreamWriter logFile = new StreamWriter(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\ProjectElle\\LogFile.csv", appendToFile))
+            {
+                logFile.WriteLine("{0},{1},{2},{3},{4},{5},{6}", DateTime.Now, offlineUser.User, offlineUser.DeckID, offlineUser.Score, offlineUser.StationsCorrect, offlineUser.QuestionsCorrect, offlineUser.QuestionsWrong);
+            }
+        }
+        else
+        {
+            appendToFile = false;
+            using (StreamWriter logFile = new StreamWriter(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\ProjectElle\\LogFile.csv", appendToFile))
+            {
+                logFile.WriteLine("{0},{1},{2},{3},{4},{5},{6}", "Session", "User", "DeckID", "Score", "Stations Correct", "Questions Correct", "Questions Wrong");
+                logFile.WriteLine("{0},{1},{2},{3},{4},{5},{6}", DateTime.Now, offlineUser.User, offlineUser.DeckID, offlineUser.Score, offlineUser.StationsCorrect, offlineUser.QuestionsCorrect, offlineUser.QuestionsWrong);
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!Fadein)
+        if (!Fadein)
         {
             levelChangerHandler.FadeInLevel();
             Fadein = true;
-        }     
+        }
 
         if (Input.GetButtonDown("No"))
         {
